@@ -1,0 +1,5 @@
+@import '../../account.css';
+
+.center-form .input-group-addon{
+    width: 141px;
+}

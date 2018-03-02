@@ -1,0 +1,27 @@
+<!--component html goes here -->
+<div class="center-form center-of-block">
+    <div class="panel panel-default">
+        <div class="panel-heading">Registration form</div>
+        <div class="panel-body">
+            <div class="error-container">
+                <p *ngFor="let error of errors">{{error}}</p>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon ">Login</span>
+                <input [(ngModel)]="model.username" type="text" placeholder="Login" class="form-control ">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Password</span>
+                <input [(ngModel)]="model.confirmPassword" type="password" placeholder="Password" class="form-control">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Confirm Password</span>
+                <input [(ngModel)]="model.password" type="password" placeholder="Confirm password" class="form-control">
+            </div>
+            <div class="success">
+                <button routerLink="/login" class="btn btn-default">Sign in</button>
+                <button (click)="register()" class="btn btn-default">Create account</button>
+            </div>
+        </div>
+    </div>
+</div>

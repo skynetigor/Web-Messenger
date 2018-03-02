@@ -1,0 +1,16 @@
+@import '../../chat.css';
+
+.chat-page{
+    width: 95%;
+    height: 80%;
+    min-height: 350px;
+}
+
+.chat-page div{
+    height: 100%;
+}
+
+.chat-body{
+    height: initial;
+}
+

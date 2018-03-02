@@ -1,0 +1,4 @@
+    <textarea [(ngModel)]="text" (keypress)="keyPress($event)" class="form-control message" placeholder="Input message"></textarea>
+    <div class="sender">
+        <button (click)="sendMessage()" class="btn btn-default">Send</button>
+    </div>

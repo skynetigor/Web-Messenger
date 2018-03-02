@@ -1,0 +1,20 @@
+.center-form .input-group{
+    margin: 0px 0px 10px 0px;
+}
+
+.center-form .input-group-addon{
+    width: 88px;
+}
+
+.success{
+    float: right;
+}
+
+.error-container{
+    min-height: 33px;
+    color: red;
+}
+
+.error-container p{
+margin: 0px;
+}

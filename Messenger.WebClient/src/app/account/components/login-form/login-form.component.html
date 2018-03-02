@@ -1,0 +1,28 @@
+<!--component html goes here -->
+<div class="center-form center-of-block">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>{{localize('loginFormTitle', 'Login form')}}</span>
+            <span *ngFor="let lang of availableLangs">
+<span (click)="changeLocalization(lang)">{{lang}}</span>
+            </span>
+        </div>
+        <div class="panel-body">
+            <div class="error-container">
+                <p *ngFor="let error of errors">{{error}}</p>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">{{localize('login', 'Login')}}</span>
+                <input [(ngModel)]="model.username" type="text" placeholder= "{{localize('login', 'Login')}}" class="form-control ">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">{{localize('password', 'Password')}}</span>
+                <input [(ngModel)]="model.password" type="password" placeholder="{{localize('password', 'Password')}}" class="form-control">
+            </div>
+            <div class="success">
+                <button routerLink="/registration" class="btn btn-default">{{localize('registration', 'Registration')}}</button>
+                <button (click)="signIn()" class="btn btn-default">{{localize('signin', 'Sign in')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

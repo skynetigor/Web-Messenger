@@ -1,0 +1,15 @@
+<div class="panel panel-default wrapper">
+    <!-- <audio #audioNotification src="dist\webclient\assets\sms.mp3"></audio> -->
+    <div class="panel-heading">Chat</div>
+    <div class="panel-body chat-container fill">
+        <div (scroll)="onScroll()" #scroll class="chat">
+            <message *ngFor="let message of messages" [setMessage]="message"></message>
+        </div>
+    </div>
+    <div class="writing-info">
+        <typing-informator></typing-informator>
+    </div>
+    <div class="actions">
+        <message-form></message-form>
+    </div>
+</div>
