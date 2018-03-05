@@ -1,8 +1,6 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MongoORM.Models
 {
@@ -12,9 +10,10 @@ namespace MongoORM.Models
         {
             this.QueryDictionary = new Dictionary<string, IEnumerable<BsonDocument>>();
         }
+
         public string CollectionName { get; set; }
 
-        public string idName { get; set; }
+        public string IdName { get; set; }
 
         public Type CurrentType { get; set; }
 

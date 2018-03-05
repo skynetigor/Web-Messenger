@@ -13,7 +13,6 @@ namespace MongoORM.Serializers
     {
         public override ICollection<T> Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            var r = context.Reader.CurrentBsonType;
             ArraySerializer<T> ser = new ArraySerializer<T>();
             var arr = ser.Deserialize(context, args);
             return new TrackingList<T>(arr);
@@ -24,7 +23,6 @@ namespace MongoORM.Serializers
     {
         public override IList<T> Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            var r = context.Reader.CurrentBsonType;
             ArraySerializer<T> ser = new ArraySerializer<T>();
             var arr = ser.Deserialize(context, args);
             return new TrackingList<T>(arr);

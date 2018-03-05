@@ -1,8 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Serializers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson.Serialization;
+﻿using System.Collections.Generic;
 using MongoORM.Abstracts;
 using MongoDB.Bson;
 using System.Linq;
@@ -12,7 +8,7 @@ namespace MongoORM.Serializers
     internal class ModelSerializer<T> : IModelSerializer<BsonDocument>
     {
         private const string MongoIdProperty = "_id";
-        private ITypeInitializer typeInitializer;
+        private readonly ITypeInitializer typeInitializer;
 
         public ModelSerializer(ITypeInitializer typeInitializer)
         {
@@ -21,14 +17,16 @@ namespace MongoORM.Serializers
 
         public BsonDocument Serialize<TEntity>(TEntity entity) where TEntity : class
         {
-            var typeModelThis = this.typeInitializer.InitializeType<TEntity>();
+            var thisTypeModel = this.typeInitializer.InitializeType<TEntity>();
 
-            var entType = typeModelThis.CurrentType;
-            var id = entType.GetProperty(typeModelThis.idName).GetValue(entity).ToString();
-            var document = new BsonDocument();
-            document[MongoIdProperty] = id;
+            var entType = thisTypeModel.CurrentType;
+            var id = entType.GetProperty(thisTypeModel.IdName).GetValue(entity).ToString();
+            var document = new BsonDocument
+            {
+                { MongoIdProperty, id }
+            };
 
-            foreach (var prop in entType.GetProperties().Where(p => p.Name != typeModelThis.idName))
+            foreach (var prop in entType.GetProperties().Where(p => p.Name != thisTypeModel.IdName))
             {
                 if (prop.PropertyType.Name == typeof(ICollection<>).Name
                     || prop.PropertyType.Name == typeof(IEnumerable<>).Name)
@@ -45,7 +43,7 @@ namespace MongoORM.Serializers
                     if (currentValue != null)
                     {
                         var tmodel = this.typeInitializer.GetTypeModel(prop.PropertyType);
-                        var currentProp = prop.PropertyType.GetProperty(tmodel.idName);
+                        var currentProp = prop.PropertyType.GetProperty(tmodel.IdName);
                         var val = currentProp.GetValue(currentValue);
 
                         if (val != null)
@@ -65,15 +63,7 @@ namespace MongoORM.Serializers
 
         public IEnumerable<BsonDocument> Serialize<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            var documents = new List<BsonDocument>();
-
-            foreach (var e in entities)
-            {
-                var doc = this.Serialize<TEntity>(e);
-                documents.Add(doc);
-            }
-
-            return documents;
+            return entities.Select(this.Serialize<TEntity>);
         }
     }
 }

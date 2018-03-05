@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MongoORM.Models
 {
@@ -29,7 +27,7 @@ namespace MongoORM.Models
 
         public int Count { get { return this.CurrentList.Count; } }
 
-        public bool IsReadOnly { get; }
+        public bool IsReadOnly { get; } = false;
 
         public T this[int index]
         {
