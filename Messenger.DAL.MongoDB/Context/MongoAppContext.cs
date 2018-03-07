@@ -1,6 +1,6 @@
 ﻿using Messenger.Core.DAL.Models;
-using MongoORM;
-using MongoORM.Abstracts;
+using MongoODM;
+using MongoODM.Abstracts;
 
 namespace Messenger.DAL.MongoDB.Context
 {

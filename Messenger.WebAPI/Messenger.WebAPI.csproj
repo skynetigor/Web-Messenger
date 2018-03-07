@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>EXE</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <CodeAnalysisRuleSet>../StyleCop/Nix.StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

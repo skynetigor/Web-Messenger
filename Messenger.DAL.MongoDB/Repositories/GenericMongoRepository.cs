@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
-using MongoORM.Abstracts;
+using MongoODM.Abstracts;
 
 namespace Messenger.DAL.MongoDB.Repositories
 {
@@ -31,7 +31,7 @@ namespace Messenger.DAL.MongoDB.Repositories
             get { return this.modelsProvider; }
         }
 
-        protected IEnumerable<TEntity> Query { get; set; }
+        protected IQueryable<TEntity> Query { get; set; }
 
         public void Add(TEntity entity)
         {
@@ -57,7 +57,7 @@ namespace Messenger.DAL.MongoDB.Repositories
         {
             if (this.Query != null)
             {
-                return this.Query;
+                return this.Query.ToArray();
             }
 
             return this.modelsProvider;
@@ -67,7 +67,7 @@ namespace Messenger.DAL.MongoDB.Repositories
         {
             if (this.Query != null)
             {
-                return this.Query.Where(predicate.Compile());
+                return this.Query.Where(predicate);
             }
 
             return this.modelsProvider.Where(predicate.Compile());

@@ -1,4 +1,5 @@
-﻿using Messenger.Core.DAL.Models;
+﻿using System.Linq;
+using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
 
 namespace Messenger.DAL.MongoDB.Repositories

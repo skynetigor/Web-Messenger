@@ -18,8 +18,7 @@ namespace Messenger.DAL.MongoDB.Repositories
 
         public MessagesResponseModel GetMessages(Room room, int count, int page)
         {
-            var messageQuery = this.Query.Where(m => m.Room.Id == room.Id)
-                .OrderBy(m => m.Id);
+            var messageQuery = this.Query.Where(m => m.Room.Id == room.Id);
             var totalMessages = messageQuery.Count();
 
             if (totalMessages == 0)
@@ -40,9 +39,10 @@ namespace Messenger.DAL.MongoDB.Repositories
 
             var taking = messageQuery
                 .Take(totalMessages - ((page - 1) * count));
-            var takingCount = taking.Count();
+            var takingCount = taking.Count() - count;
+
             var filteredMessages = taking
-                .Skip(takingCount - count).ToArray();
+                .Skip(takingCount >= 0 ? takingCount : 0).ToArray();
             return new MessagesResponseModel(totalPages, totalMessages, filteredMessages);
         }
     }

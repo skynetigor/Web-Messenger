@@ -4,7 +4,7 @@ using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
 using Messenger.DAL.MongoDB.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using MongoORM;
+using MongoODM;
 
 namespace Messenger.DAL.MongoDB
 {
