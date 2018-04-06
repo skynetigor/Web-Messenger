@@ -7,7 +7,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Injectable } from '@angular/core';
 import { ISignalRConnection } from 'ng2-signalr';
 import { RoomModel } from './../models/room.model';
-import { UserModel, AccountService, HttpClient } from 'app/account';
+import { UserModel, AccountService, HttpCustomClient } from 'app/account';
 import { ApiUrls } from 'app/api-urls';
 
 const currentRoom = 'currentRoom';
@@ -46,12 +46,12 @@ export class RoomService {
     constructor(
         private accountService: AccountService,
         private connectionResolver: ConnectionResolver,
-        private httpClient: HttpClient
+        private httpClient: HttpCustomClient
     ) {
         const rooms = this.rooms;
         const users = this.users;
             httpClient.post(ApiUrls.getRooms, null).subscribe(r => {
-                const data = r.json();
+                const data = <any>r;
                 this.rooms = data;
             });
             this.connectionResolver.listenServerEvent<RoomModel[]>('onRoomsCountChange').subscribe(model => {

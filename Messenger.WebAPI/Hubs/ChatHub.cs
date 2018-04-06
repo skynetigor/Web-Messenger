@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Messenger.Core.BLL.Interfaces;
@@ -76,7 +77,7 @@ namespace Messenger.WebAPI.Hubs
             }
 
             var messagesJson = this.Mapper
-                .Map<IEnumerable<Message>, IEnumerable<MessageJson>>(model.Messages);
+                .Map<IEnumerable<Message>, IEnumerable<MessageJson>>(model.Messages.ToList());
             return new
             {
                 messages = messagesJson,

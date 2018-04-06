@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MongoORM\MongoODM.csproj" />
+    <ProjectReference Include="..\..\MongoORM\DbdocFramework.csproj" />
     <ProjectReference Include="..\Messenger.Core\Messenger.Core.csproj" />
   </ItemGroup>
 

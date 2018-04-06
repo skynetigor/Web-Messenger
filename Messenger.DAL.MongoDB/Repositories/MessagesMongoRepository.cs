@@ -10,10 +10,12 @@ namespace Messenger.DAL.MongoDB.Repositories
 {
     internal class MessagesMongoRepository : GenericMongoRepository<Message>, IMessagesRepository
     {
+        protected override IQueryable<Message> Query { get; }
+
         public MessagesMongoRepository(MongoAppContext context)
             : base(context)
         {
-            this.Query = this.ModelsProvider.Include(m => m.Room, m => m.User);
+            this.Query = this.ModelsProvider.UseEagerLoading().Include(m => m.Room, m => m.User);
         }
 
         public MessagesResponseModel GetMessages(Room room, int count, int page)
@@ -45,5 +47,6 @@ namespace Messenger.DAL.MongoDB.Repositories
                 .Skip(takingCount >= 0 ? takingCount : 0).ToArray();
             return new MessagesResponseModel(totalPages, totalMessages, filteredMessages);
         }
+
     }
 }

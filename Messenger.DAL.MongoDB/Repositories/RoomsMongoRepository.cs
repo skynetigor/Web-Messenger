@@ -6,10 +6,12 @@ namespace Messenger.DAL.MongoDB.Repositories
 {
     internal class RoomsMongoRepository : GenericMongoRepository<Room>
     {
+        protected override IQueryable<Room> Query { get; }
+
         public RoomsMongoRepository(MongoAppContext context)
             : base(context)
         {
-            this.Query = this.ModelsProvider.Include(m => m.Users);
+            this.Query = this.ModelsProvider.UseEagerLoading().Include(m => m.Users);
         }
     }
 }

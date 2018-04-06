@@ -1,20 +1,21 @@
-﻿using Messenger.Core.DAL.Models;
-using MongoODM;
-using MongoODM.Abstracts;
+﻿using DbdocFramework;
+using DbdocFramework.Abstracts;
+using DbdocFramework.MongoDbProvider.Settings;
+using Messenger.Core.DAL.Models;
 
 namespace Messenger.DAL.MongoDB.Context
 {
-    internal class MongoAppContext : MongoDbContext
+    internal class MongoAppContext : DocumentDbContext
     {
-        public MongoAppContext(MongoContextSettings settings)
+        public MongoAppContext(MongoDbContextSettings settings)
             : base(settings)
         {
         }
 
-        public IModelsProvider<Room> Rooms { get; set; }
+        public IDbSet<Room> Rooms { get; set; }
 
-        public IModelsProvider<Message> Messages { get; set; }
+        public IDbSet<Message> Messages { get; set; }
 
-        public IModelsProvider<User> Users { get; set; }
+        public IDbSet<User> Users { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using Messenger.Core;
+﻿using DbdocFramework.MongoDbProvider.Settings;
+using Messenger.Core;
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
 using Messenger.DAL.MongoDB.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using MongoODM;
 
 namespace Messenger.DAL.MongoDB
 {
@@ -12,7 +12,7 @@ namespace Messenger.DAL.MongoDB
     {
         public void Install(IServiceCollection serviceCollection, DbSettings dbSettings)
         {
-            serviceCollection.AddSingleton<MongoContextSettings>(new MongoContextSettings(dbSettings.ConnectionString));
+            serviceCollection.AddSingleton<MongoDbContextSettings>(new MongoDbContextSettings(dbSettings.ConnectionString));
             var contextType = typeof(MongoAppContext);
             serviceCollection.Add(new ServiceDescriptor(contextType, contextType, ServiceLifetime.Scoped));
             serviceCollection.AddScoped<IRepository<Room>, RoomsMongoRepository>();

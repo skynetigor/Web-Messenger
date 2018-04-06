@@ -1,6 +1,7 @@
 import { ApiUrls } from './../api-urls';
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 export abstract class ILocalizationService {
     public abstract get availableLangs(): string[];
     public abstract get currentLang(): string;
@@ -16,7 +17,7 @@ export class LocalizationService implements ILocalizationService {
     public availableLangs: string[];
     private localeObject;
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
         this.availableLangs = ['ru', 'en']
         const code = localStorage.getItem(langKey);
         if (code !== null && code !== undefined) {

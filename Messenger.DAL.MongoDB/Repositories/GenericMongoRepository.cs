@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using DbdocFramework.Abstracts;
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
-using MongoODM.Abstracts;
 
 namespace Messenger.DAL.MongoDB.Repositories
 {
-    internal class GenericMongoRepository<TEntity> : IRepository<TEntity>
+    internal abstract class GenericMongoRepository<TEntity> : IRepository<TEntity>
         where TEntity : BaseModel, new()
     {
         private MongoAppContext context;
-        private IModelsProvider<TEntity> modelsProvider;
+        private IDbSet<TEntity> modelsProvider;
 
         public GenericMongoRepository(MongoAppContext context)
         {
@@ -26,12 +26,12 @@ namespace Messenger.DAL.MongoDB.Repositories
             get { return this.context; }
         }
 
-        protected IModelsProvider<TEntity> ModelsProvider
+        protected IDbSet<TEntity> ModelsProvider
         {
             get { return this.modelsProvider; }
         }
 
-        protected IQueryable<TEntity> Query { get; set; }
+        protected abstract IQueryable<TEntity> Query { get; }
 
         public void Add(TEntity entity)
         {
@@ -50,27 +50,17 @@ namespace Messenger.DAL.MongoDB.Repositories
 
         public TEntity GetById(string id)
         {
-            return this.Query != null ? this.Query.FirstOrDefault(e => e.Id == id) : this.modelsProvider.FirstOrDefault(e => e.Id == id);
+            return this.Query.FirstOrDefault(e => e.Id == id);
         }
 
         public IEnumerable<TEntity> GetEntities()
         {
-            if (this.Query != null)
-            {
-                return this.Query.ToArray();
-            }
-
-            return this.modelsProvider;
+            return this.Query;
         }
 
         public IEnumerable<TEntity> GetEntities(Expression<Func<TEntity, bool>> predicate)
         {
-            if (this.Query != null)
-            {
-                return this.Query.Where(predicate);
-            }
-
-            return this.modelsProvider.Where(predicate.Compile());
+            return this.Query.Where(predicate);
         }
     }
 }
