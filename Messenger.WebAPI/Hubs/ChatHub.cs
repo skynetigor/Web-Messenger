@@ -90,6 +90,16 @@ namespace Messenger.WebAPI.Hubs
                .GetById(this.CurrentUser.Id);
             var currentRoom = user.Room;
 
+            if (currentRoom?.Users is User[])
+            {
+                currentRoom.Users = new List<User>(currentRoom.Users);
+            }
+
+            if (room?.Users is User[])
+            {
+                room.Users = new List<User>(room.Users);
+            }
+
             if (!string.IsNullOrEmpty(room.Id))
             {
                 this.RoomsManager.EnterToRoom(user, room);

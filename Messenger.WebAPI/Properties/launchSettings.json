@@ -20,7 +20,7 @@
       "commandLineArgs": "--url http://localhost:5000",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://192.168.0.105:2000/"
     }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RoomService } from '../../services';
 import { RoomModel } from '../../models';
+import { Observable } from 'rxjs';
 
 @Component({
-    moduleId: module.id,
     selector: 'rooms-list',
     templateUrl: 'rooms-list.component.html',
     styleUrls: ['rooms-list.css'],
@@ -11,6 +11,8 @@ import { RoomModel } from '../../models';
 
 export class RoomsListComponent {
     public isModalOpened = false;
+
+    public rooms$: Observable<RoomModel>;
 
     public get currentRoomId(): string {
         const roomId = this.roomService.currentRoomId;
@@ -20,7 +22,9 @@ export class RoomsListComponent {
         return '';
     }
 
-    constructor(private roomService: RoomService) { }
+    constructor(private roomService: RoomService) {
+        this.rooms$ = roomService.rooms$;
+    }
 
     public get roomList(): RoomModel[] {
         return this.roomService.rooms;

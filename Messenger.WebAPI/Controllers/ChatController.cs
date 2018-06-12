@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
@@ -22,7 +23,7 @@ namespace Messenger.WebAPI.Controllers
         [HttpPost]
         public IActionResult GetRooms()
         {
-            var rooms = this.roomRepository.GetEntities();
+            var rooms = this.roomRepository.GetEntities().ToArray();
             var roomsJson = this.mapper.Map<IEnumerable<Room>, IEnumerable<RoomJson>>(rooms);
             return this.Json(roomsJson);
         }

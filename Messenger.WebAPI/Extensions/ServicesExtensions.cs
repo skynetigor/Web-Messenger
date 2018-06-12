@@ -8,7 +8,7 @@ namespace Messenger.WebAPI.Extensions
 {
     public static class ServicesExtensions
     {
-        private const string ServerMsg = "Application running on \"{0}\" database. \n";
+        private const string ServerMsg = "Application is running on \"{0}\" database. \n";
 
         public static IServiceCollection AddMessengerServices(this IServiceCollection services, IConfigurationRoot configuration)
         {

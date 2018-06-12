@@ -32,6 +32,7 @@ namespace Messenger.BLL.Services
             var currentRoom = user.Room;
             if (currentRoom != null)
             {
+                var t = currentRoom.Users.GetType();
                 currentRoom.Users.Remove(user);
                 this.roomsRepository.Update(currentRoom);
             }

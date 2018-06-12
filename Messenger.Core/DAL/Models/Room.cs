@@ -13,8 +13,8 @@ namespace Messenger.Core.DAL.Models
 
         public string Name { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual IList<User> Users { get; set; }
 
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual IList<Message> Messages { get; set; }
     }
 }

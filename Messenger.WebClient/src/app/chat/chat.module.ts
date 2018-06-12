@@ -15,6 +15,8 @@ import {
 } from 'app/chat/components';
 import { ConnectionResolver, MessageService, RoomService, TypingInformatorService } from 'app/chat/services';
 import { SignalRConfiguration, SignalRModule } from 'ng2-signalr';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store';
 
 export function createConfig(): SignalRConfiguration {
     const c = new SignalRConfiguration();
@@ -29,6 +31,7 @@ export function createConfig(): SignalRConfiguration {
         FormsModule,
         SignalRModule.forRoot(createConfig),
         InfiniteScrollModule,
+        StoreModule.forRoot(reducers)
     ],
     declarations: [
         ChatBoxComponent,

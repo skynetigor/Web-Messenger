@@ -1,14 +1,18 @@
-import { RoomChangingModel } from './../models/roomChangingModel';
-import { MessageModel } from './../models/message.model';
-import { ConnectionResolver } from './connection-resolver';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Injectable } from '@angular/core';
+<<<<<<< Updated upstream
 import { ISignalRConnection } from 'ng2-signalr';
 import { RoomModel } from './../models/room.model';
 import { UserModel, AccountService, HttpClient } from 'app/account';
+=======
+import { AccountService, HttpCustomClient, UserModel } from 'app/account';
+>>>>>>> Stashed changes
 import { ApiUrls } from 'app/api-urls';
+import { Observable } from 'rxjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+
+import { RoomModel } from './../models/room.model';
+import { RoomChangingModel } from './../models/roomChangingModel';
+import { ConnectionResolver } from './connection-resolver';
 
 const currentRoom = 'currentRoom';
 
@@ -19,12 +23,15 @@ export class RoomService {
     public rooms: RoomModel[] = [];
     public users: UserModel[] = [];
 
+    public rooms$: Observable<RoomModel>;
+    public users$: Observable<UserModel>;
+
     private get getRoomChangingModel(): RoomChangingModel {
-        const roomChanignModel = new RoomChangingModel();
-        roomChanignModel.messages = [];
-        roomChanignModel.page = 1;
-        roomChanignModel.totalPages = 1;
-        return roomChanignModel;
+        const roomChangingModel = new RoomChangingModel();
+        roomChangingModel.messages = [];
+        roomChangingModel.page = 1;
+        roomChangingModel.totalPages = 1;
+        return roomChangingModel;
     }
 
     public get currentRoomId(): string {
@@ -50,6 +57,7 @@ export class RoomService {
     ) {
         const rooms = this.rooms;
         const users = this.users;
+<<<<<<< Updated upstream
             httpClient.post(ApiUrls.getRooms, null).subscribe(r => {
                 const data = r.json();
                 this.rooms = data;
@@ -60,10 +68,25 @@ export class RoomService {
             this.connectionResolver.listenServerEvent<UserModel[]>('onUserCountChanged').subscribe(model => {
                 this.users = model;
             });
+=======
+        httpClient.post(ApiUrls.getRooms, null).subscribe(r => {
+            const data = <any>r;
+            this.rooms = data;
+        });
+>>>>>>> Stashed changes
 
-            if (this.currentRoomId) {
-                this.enterRoom(this.currentRoomId);
-            }
+        this.rooms$ = this.connectionResolver.listenServerEvent<RoomModel[]>('onRoomsCountChange');
+
+        this.connectionResolver.listenServerEvent<RoomModel[]>('onRoomsCountChange').subscribe(model => {
+            this.rooms = model;
+        });
+        this.connectionResolver.listenServerEvent<UserModel[]>('onUserCountChanged').subscribe(model => {
+            this.users = model;
+        });
+
+        if (this.currentRoomId) {
+            this.enterRoom(this.currentRoomId);
+        }
     }
 
     public enterRoom(id: string): void {
@@ -73,7 +96,7 @@ export class RoomService {
                 if (model.messagesModel) {
                     model.messagesModel.page = 1;
                     this.roomchanged.next(model.messagesModel);
-                }else {
+                } else {
                     this.roomchanged.next(this.getRoomChangingModel);
                 }
                 this.accountService.isInRoom = true;

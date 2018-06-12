@@ -3,7 +3,7 @@
     <div class="panel-body fill">
         <div class="rooms-list">
             <div class="btn-group-vertical">
-                <button [ngClass]="{'currentRoom': room.id === currentRoomId}" class="btn btn-default" *ngFor="let room of roomList" (click)="changeRoom(room.id)">{{room.name}}</button>
+                <button [ngClass]="{'currentRoom': room.id === currentRoomId}" class="btn btn-default" *ngFor="let room of (rooms$ | async)" (click)="changeRoom(room.id)">{{room.name}}</button>
             </div>
         </div>
     </div>

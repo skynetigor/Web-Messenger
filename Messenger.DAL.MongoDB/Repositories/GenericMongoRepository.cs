@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+<<<<<<< Updated upstream
+=======
+using DocDb.Core.Abstracts;
+>>>>>>> Stashed changes
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
 using Messenger.DAL.MongoDB.Context;
@@ -36,16 +40,21 @@ namespace Messenger.DAL.MongoDB.Repositories
         public void Add(TEntity entity)
         {
             this.modelsProvider.Add(entity);
+            context.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
             this.modelsProvider.Update(entity);
+            context.SaveChanges();
+            
         }
 
         public void Remove(TEntity entity)
         {
             this.modelsProvider.Remove(entity);
+            context.SaveChanges();
+
         }
 
         public TEntity GetById(string id)

@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Messenger.BLL\Messenger.BLL.csproj" />
     <ProjectReference Include="..\Messenger.Core\Messenger.Core.csproj" />
-    <ProjectReference Include="..\Messenger.DAL.MongoDB\Messenger.DAL.MongoDB.csproj" />
     <ProjectReference Include="..\Messenger.DAL.Sql\Messenger.DAL.Sql.csproj" />
     <ProjectReference Include="..\MongoORM\MongoORM.csproj" />
   </ItemGroup>
