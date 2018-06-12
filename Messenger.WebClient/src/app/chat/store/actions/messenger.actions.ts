@@ -8,7 +8,10 @@ export const MessengerActionType = {
     EnteredToRoomSuccess: '[Messenger] Entered To Room Success',
     CreatedRoomSuccess: '[Messenger] Created To Room Success',
     UpdateRooms: '[Messenger] Update Rooms',
-    UserCountChanged: '[Messenger] User Count Changed'
+    UserCountChanged: '[Messenger] User Count Changed',
+    GetMessage: '[Messenger] Get Message',
+    RequestSendMessage: '[Messenger] Request Send Message',
+    LoadMessages: '[Messenger] Load Messages'
 };
 
 export class RequestEnteringRoomAction implements Action {
@@ -47,4 +50,31 @@ export class UserCountChangedAction implements Action {
     constructor(public payload: any) { }
 }
 
-export declare type MessengerAction = EnteredToRoomSuccessAction | CreatedRoomSuccessAction | UpdateRoomsAction;
+export class RequestSendMessageAction implements Action {
+    readonly type = MessengerActionType.GetMessage;
+
+    constructor(public payload: any | any[]) {
+        payload = Array.isArray(payload) ? payload : [payload];
+    }
+}
+
+export class GetMessageAction implements Action {
+    readonly type = MessengerActionType.GetMessage;
+
+    constructor(public payload: any | any[]) {
+        payload = Array.isArray(payload) ? payload : [payload];
+    }
+}
+
+export class LoadMessagesAction implements Action {
+    readonly type = MessengerActionType.LoadMessages;
+
+    constructor(public payload: any) { }
+}
+
+export declare type MessengerAction =
+    EnteredToRoomSuccessAction
+    | CreatedRoomSuccessAction
+    | UpdateRoomsAction
+    | GetMessageAction
+    | LoadMessagesAction;

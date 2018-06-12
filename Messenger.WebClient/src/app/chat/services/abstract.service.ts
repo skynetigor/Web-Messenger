@@ -19,11 +19,11 @@ export class AbstractService implements OnDestroy {
         this.subscription.forEach(subscription => subscription.unsubscribe());
     }
 
-    protected updateStateFromEvent<T>(eventName: string, action: ((t: T) => any)) {
+    protected updateStateFromEvent<T>(eventName: string, action: (t: T) => any) {
         return this.updateStateFromObservable(this.connectionResolver.listenServerEvent(eventName), action);
     }
 
-    protected updateStateFromObservable<T>(observable: Observable<T>, action: ((t: T) => any)) {
+    protected updateStateFromObservable<T>(observable: Observable<T>, action: (t: T) => any) {
         const subject = new Subject<T>();
 
         this.subscription.push(observable.subscribe(t => {
@@ -32,5 +32,12 @@ export class AbstractService implements OnDestroy {
         }));
 
         return subject.asObservable();
+    }
+
+    protected updateStateFromObservableAndUnsubscribe<T>(observable: Observable<T>, action: (t: T) => any) {
+        const subscription = observable.subscribe(t => {
+            this.store.dispatch(action(t));
+            subscription.unsubscribe();
+        });
     }
 }

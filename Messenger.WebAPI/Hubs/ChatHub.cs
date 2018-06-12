@@ -132,7 +132,7 @@ namespace Messenger.WebAPI.Hubs
             var room = new Room { Id = roomId };
             var message = new Message
             {
-                Date = DateTime.Now.ToString("HH:mm"),
+                Date = DateTime.Now,
                 Room = room,
                 User = this.CurrentUser,
                 Text = text

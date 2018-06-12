@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap, mergeMap } from 'rxjs/operators';
 
 import { ConnectionResolver } from '../../services';
-import { CreatedRoomSuccessAction, EnteredToRoomSuccessAction, MessengerActionType } from '../actions';
+import { CreatedRoomSuccessAction, EnteredToRoomSuccessAction, MessengerActionType, GetMessageAction } from '../actions';
 
 @Injectable()
 export class MessengerEffects {
@@ -25,5 +25,4 @@ export class MessengerEffects {
         .ofType(MessengerActionType.RequestCreatingRoomAction).pipe(
         mergeMap(action => this.connectionResolver.invokeServerMethod('CreateRoom', (<any>action).payload)),
         map(response => new CreatedRoomSuccessAction(response)));
-
 }

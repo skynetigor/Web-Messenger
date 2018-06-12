@@ -8,9 +8,11 @@ namespace Messenger.WebAPI.AutomapperProfiles
     {
         public AutoMapperProfile()
         {
-            this.CreateMap<Message, MessageJson>().ConstructProjectionUsing(m => new MessageJson
+            this.CreateMap<Message, MessageJson>().ProjectUsing(m => new MessageJson
             {
                 UserName = m.User.UserName,
+                Date = m.Date.ToString("HH:mm"),
+                Text = m.Text
             });
             this.CreateMap<Room, RoomJson>();
             this.CreateMap<User, UserJson>();

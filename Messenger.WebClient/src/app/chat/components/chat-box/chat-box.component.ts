@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RoomService, MessageService } from '../../services';
 import { MessageModel } from '../../models';
+import { Observable } from 'rxjs/internal/Observable';
 
 const messageCount = 10;
 const scrollingPersent = 10;
@@ -21,29 +22,11 @@ export class ChatBoxComponent implements OnInit, AfterViewChecked {
     @ViewChild('scroll') private myScrollContainer: ElementRef;
     @ViewChild('audioNotification') private audioNotification: ElementRef;
 
-    private m: MessageModel[] = [];
-    constructor(private messageService: MessageService, private roomService: RoomService) {
-        messageService.getMessage.subscribe(message => {
-            this.m.push(message);
-            this.audioNotification.nativeElement.play();
-        });
-        messageService.getOwnMessage.subscribe(message => {
-            this.m.push(message);
-        });
-        messageService.messagesLoading.subscribe(messages => {
-            this.m = messages.concat(this.m);
-        });
 
-        // roomService.roomChangedEvent.subscribe(model => {
-        //     if (model.messages) {
-        //         this.m = model.messages;
-        //     } else {
-        //         this.m = [];
-        //     }
-        //     try {
-        //         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight + 100;
-        //     } catch (err) { }
-        // });
+    public readonly messages$: Observable<MessageModel[]>;
+
+    constructor(private messageService: MessageService, private roomService: RoomService) {
+        this.messages$ = messageService.messages$;
     }
 
     public ngAfterViewChecked(): void {
@@ -71,10 +54,6 @@ export class ChatBoxComponent implements OnInit, AfterViewChecked {
         } else {
             this.disableScrollDown = true;
         }
-    }
-
-    public get messages(): MessageModel[] {
-        return this.m;
     }
 
     private scrollToBottom(): void {

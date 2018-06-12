@@ -13,7 +13,7 @@ export class MessageFormComponent {
     constructor(private messageService: MessageService, private accountService: AccountService, private roomservice: RoomService) { }
 
     public sendMessage(): void {
-        if (this.text.length > 0 && this.accountService.isInRoom === true) {
+        if (this.text.length > 0) {
             this.messageService.sendMessage(this.roomservice.currentRoomId, this.text);
             this.text = '';
         }

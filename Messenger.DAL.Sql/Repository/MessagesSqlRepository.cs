@@ -22,7 +22,7 @@ namespace Messenger.DAL.Sql.Repository
         public MessagesResponseModel GetMessages(Room room, int count, int page)
         {
             var messageQuery = this.Query.Where(m => m.Room.Id == room.Id)
-                .OrderBy(m => m.Id);
+                .OrderBy(m => m.Date);
             var totalMessages = messageQuery.Count();
 
             if (totalMessages == 0)
