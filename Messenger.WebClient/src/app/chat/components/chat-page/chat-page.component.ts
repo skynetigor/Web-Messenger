@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { UserModel, AccountService } from 'app/account';
-import { ConnectionResolver } from 'app/chat/services';
+import { UserModel, AccountService } from '../../../account';
+import { ConnectionResolver, RoomService } from '../../services';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-    moduleId: module.id,
     selector: 'chat-page',
     templateUrl: 'chat-page.component.html',
     styleUrls: ['chat-page.css'],
@@ -18,10 +19,10 @@ export class ChatPageComponent {
         return this.accountService.currentUser;
     }
 
-    public get isInRoom(): boolean {
-        return this.accountService.isInRoom;
-    }
+    public readonly isInRoom$: Observable<boolean>;
 
-    constructor(private connectionResolver: ConnectionResolver, private accountService: AccountService) { }
+    constructor(private connectionResolver: ConnectionResolver, private accountService: AccountService, private roomService: RoomService) {
+        this.isInRoom$ = roomService.currentRoom$.pipe(map(t => t !== undefined));
+    }
 
 }

@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { AuthGuard, LoginFormComponent, RegistrationFormComponent } from 'app/account';
+import { AuthGuard, LoginFormComponent, RegistrationFormComponent } from './account';
 
 export const appRoutes = RouterModule.forRoot([
     { path: '', redirectTo: 'chat', pathMatch: 'prefix' },

@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { ChatRouter } from 'app/chat/chat-router';
+import { SignalRConfiguration, SignalRModule } from 'ng2-signalr';
+
+import { ChatRouter } from './chat-router';
 import {
     ChatBoxComponent,
     ChatPageComponent,
@@ -12,11 +16,10 @@ import {
     RoomsListComponent,
     TypingInformatorComponent,
     UsersListComponent,
-} from 'app/chat/components';
-import { ConnectionResolver, MessageService, RoomService, TypingInformatorService } from 'app/chat/services';
-import { SignalRConfiguration, SignalRModule } from 'ng2-signalr';
-import { StoreModule } from '@ngrx/store';
+} from './components';
+import { ConnectionResolver, MessageService, RoomService, TypingInformatorService } from './services';
 import { reducers } from './store';
+import { MessengerEffects } from './store/effects';
 
 export function createConfig(): SignalRConfiguration {
     const c = new SignalRConfiguration();
@@ -31,7 +34,8 @@ export function createConfig(): SignalRConfiguration {
         FormsModule,
         SignalRModule.forRoot(createConfig),
         InfiniteScrollModule,
-        StoreModule.forRoot(reducers)
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([MessengerEffects])
     ],
     declarations: [
         ChatBoxComponent,

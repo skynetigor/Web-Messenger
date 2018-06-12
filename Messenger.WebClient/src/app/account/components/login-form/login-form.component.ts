@@ -4,7 +4,6 @@ import { SignInModel } from '../../models';
 import { AccountService } from '../../services';
 
 @Component({
-    moduleId: module.id,
     selector: 'login',
     templateUrl: 'login-form.component.html',
     styleUrls: ['../../account.css'],

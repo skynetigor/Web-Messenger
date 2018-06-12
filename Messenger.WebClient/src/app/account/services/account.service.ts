@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
 import { UserStorage } from './user-storage';
 import { Http } from '@angular/http';
-import { HttpClient } from './httpclient';
+import { HttpCustomClient } from './httpclient';
 import { SignInModel, RegisterModel, UserModel } from '../models';
 import { Injectable } from '@angular/core';
-import { ApiUrls } from 'app/api-urls';
+import { ApiUrls } from '../../api-urls';
 
 const isNotNullOrUndefined = (obj: any): boolean => {
     return obj === null || obj === undefined;
@@ -26,7 +26,7 @@ export class AccountService {
 
     private authorize(model: any, url: string) {
         this.http.post(url, model).subscribe(response => {
-            const data: any = response.json();
+            const data: any = response;
             if (data) {
                 this.errors = [];
                 this.user = data;
@@ -46,7 +46,7 @@ export class AccountService {
         });
     }
 
-    constructor(private http: HttpClient, private router: Router, private userStorage: UserStorage) { }
+    constructor(private http: HttpCustomClient, private router: Router, private userStorage: UserStorage) { }
 
 
     public signIn(model: SignInModel): void {

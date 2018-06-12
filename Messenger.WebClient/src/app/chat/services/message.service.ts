@@ -1,13 +1,14 @@
 import 'rxjs/add/operator/ToPromise';
 
 import { Injectable } from '@angular/core';
-import { AccountService } from 'app/account';
+import { AccountService } from '../../account';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { MessageModel } from '../models';
 import { ConnectionResolver } from './connection-resolver';
 import { RoomService } from './room.service';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class MessageService {
@@ -29,6 +30,7 @@ export class MessageService {
         private roomService: RoomService,
         private connectionResolver: ConnectionResolver,
         private accountService: AccountService) {
+
         this.messageLoadingSubj = new ReplaySubject<MessageModel[]>();
         this.getMessageSubj = new ReplaySubject<MessageModel>();
         this.messagesLoading = this.messageLoadingSubj.asObservable();
@@ -38,12 +40,6 @@ export class MessageService {
 
         connectionResolver.listenServerEvent('ongetmessage').subscribe((message: MessageModel) => {
             this.getMessageSubj.next(message);
-        });
-
-        roomService.roomChangedEvent.subscribe(model => {
-            this.totalPages = model.totalPages;
-            this.page = model.page + 1;
-            this.isRequestSended = false;
         });
     }
 
@@ -65,7 +61,7 @@ export class MessageService {
         }
     }
 
-    public writeMessage(roomId: string): void {
+    public invokeWritinMessageEvent(roomId: string): void {
         if (this.connectionResolver.isConnectionExist) {
             this.connectionResolver.invokeServerMethod('UserTyping', roomId);
         }

@@ -8,7 +8,6 @@ const scrollingBan = 1;
 const pulsarDelay = 500;
 
 @Component({
-    moduleId: module.id,
     selector: 'chat-box',
     templateUrl: 'chat-box.component.html',
     styleUrls: ['chat-box.css']
@@ -35,16 +34,16 @@ export class ChatBoxComponent implements OnInit, AfterViewChecked {
             this.m = messages.concat(this.m);
         });
 
-        roomService.roomChangedEvent.subscribe(model => {
-            if (model.messages) {
-                this.m = model.messages;
-            } else {
-                this.m = [];
-            }
-            try {
-                this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight + 100;
-            } catch (err) { }
-        });
+        // roomService.roomChangedEvent.subscribe(model => {
+        //     if (model.messages) {
+        //         this.m = model.messages;
+        //     } else {
+        //         this.m = [];
+        //     }
+        //     try {
+        //         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight + 100;
+        //     } catch (err) { }
+        // });
     }
 
     public ngAfterViewChecked(): void {

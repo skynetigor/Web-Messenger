@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
+import { UserModel } from '../../account';
+import { CustomTimer, } from '../models';
 import { ConnectionResolver } from './connection-resolver';
-import { CustomTimer } from '../models';
-import { UserModel } from 'app/account';
 
 const delay = 500;
 
@@ -18,7 +18,7 @@ export class TypingInformatorService {
 
     constructor(connectionResolver: ConnectionResolver) {
         connectionResolver.listenServerEvent<UserModel>('onUserWriting').subscribe(user => {
-            const existingUser = this.timerAndUsers.find(t => t.user.id === user.id)
+            const existingUser = this.timerAndUsers.find(t => t.user.id === user.id);
             if (existingUser) {
                 existingUser.timer.extendDelay(delay);
             } else {
@@ -26,8 +26,8 @@ export class TypingInformatorService {
                     const e = this.timerAndUsers.findIndex(t => t.timer === timer);
                     this.timerAndUsers.splice(e, 1);
                     this._writingUsers.next(this.timerAndUsers.map(t => t.user.userName));
-                })
-                this.timerAndUsers.push({ timer: timer, user: user })
+                });
+                this.timerAndUsers.push({ timer: timer, user: user });
                 this._writingUsers.next(this.timerAndUsers.map(t => t.user.userName));
             }
         });

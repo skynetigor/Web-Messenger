@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { RoomService } from '../../services';
-import { RoomModel } from '../../models';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+import { RoomModel } from '../../models';
+import { RoomService } from '../../services';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
     selector: 'rooms-list',
@@ -12,22 +15,14 @@ import { Observable } from 'rxjs';
 export class RoomsListComponent {
     public isModalOpened = false;
 
-    public rooms$: Observable<RoomModel>;
+    public readonly rooms$: Observable<RoomModel[]>;
+    public readonly currentRoom$: Observable<RoomModel>;
 
-    public get currentRoomId(): string {
-        const roomId = this.roomService.currentRoomId;
-        if (roomId) {
-            return roomId;
-        }
-        return '';
-    }
+    private currentRoomId: string;
 
     constructor(private roomService: RoomService) {
         this.rooms$ = roomService.rooms$;
-    }
-
-    public get roomList(): RoomModel[] {
-        return this.roomService.rooms;
+        this.currentRoom$ = roomService.currentRoom$.pipe(map(t =>  t || <any>{}), tap(t => this.currentRoomId = t.id));
     }
 
     public openModal() {

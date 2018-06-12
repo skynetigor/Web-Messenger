@@ -3,7 +3,7 @@
     <div class="panel-heading">Users</div>
     <div class="panel-body fill">
         <ul class="list-group">
-            <li *ngFor="let user of users"  class="list-group-item"><i class="glyphicon glyphicon-user"></i> {{user.userName}}</li>
+            <li *ngFor="let user of (users$ | async )"  class="list-group-item"><i class="glyphicon glyphicon-user"></i> {{user.userName}}</li>
         </ul>
     </div>
     <div class="actions">

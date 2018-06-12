@@ -1,9 +1,8 @@
 import { Input, Component } from '@angular/core';
 import { MessageModel } from '../../models';
-import { AccountService } from 'app/account';
+import { AccountService } from '../../../account';
 
 @Component({
-    moduleId: module.id,
     selector: 'message',
     templateUrl: 'message.component.html',
     styleUrls: ['message.css']

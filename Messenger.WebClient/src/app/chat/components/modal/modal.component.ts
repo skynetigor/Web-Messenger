@@ -1,7 +1,6 @@
 import { Component, AfterViewChecked, EventEmitter, Input, Output, ViewChild, ElementRef, OnInit } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'modal',
     templateUrl: 'modal.component.html',
     styleUrls: ['modal.css']

@@ -3,7 +3,6 @@ import { AccountService } from '../../services';
 import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'login',
     templateUrl: 'registration-form.component.html',
     styleUrls: ['registration.css']

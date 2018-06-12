@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { MessageService, RoomService } from '../../services';
-import { AccountService } from 'app/account';
+import { AccountService } from '../../../account';
 
 @Component({
-    moduleId: module.id,
     selector: 'message-form',
     templateUrl: 'message-form.component.html',
     styleUrls: ['message-form.css']
@@ -25,6 +24,6 @@ export class MessageFormComponent {
             this.sendMessage();
             return false;
         }
-        this.messageService.writeMessage(this.roomservice.currentRoomId);
+        this.messageService.invokeWritinMessageEvent(this.roomservice.currentRoomId);
     }
 }
