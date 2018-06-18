@@ -24,6 +24,6 @@ export class MessageFormComponent {
             this.sendMessage();
             return false;
         }
-        // this.messageService.invokeWritinMessageEvent(this.roomservice.currentRoomId);
+        this.messageService.invokeWritinMessageEvent(this.roomservice.currentRoomId);
     }
 }

@@ -20,10 +20,7 @@ export class RoomEffects {
     @Effect()
     enterRoom$: Observable<Action> = this.actions$
         .ofType(MessengerActionType.RequestEnteringRoom).pipe(
-        mergeMap(action => {
-            debugger;
-            return this.connectionResolver.invokeServerMethod('EnterRoom', (<any>action).payload, 10)
-        }),
+        mergeMap(action => this.connectionResolver.invokeServerMethod('EnterRoom', (<any>action).payload, 10)),
         filter(t => t),
         map(response => new EnteredToRoomSuccessAction(response)));
 

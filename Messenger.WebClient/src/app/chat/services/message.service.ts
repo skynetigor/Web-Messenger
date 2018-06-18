@@ -29,9 +29,7 @@ export class MessageService extends AbstractService {
     }
 
     public invokeWritinMessageEvent(roomId: string): void {
-        if (this.connectionResolver.isConnectionExist) {
-            this.connectionResolver.invokeServerMethod('UserTyping', roomId);
-        }
+        this.connectionResolver.invokeServerMethod('UserTyping', roomId);
     }
 
     public sendMessage(message: string) {

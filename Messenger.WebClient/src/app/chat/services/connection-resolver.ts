@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ISignalRConnection, SignalR, SignalRConfiguration } from 'ng2-signalr';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { mergeMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { AccountService } from '../../account';
 import { ApiUrls } from '../../api-urls';
@@ -10,22 +10,32 @@ import { ApiUrls } from '../../api-urls';
 @Injectable()
 export class ConnectionResolver {
     private readonly connectionObservable: Observable<ISignalRConnection>;
+    private connection: ISignalRConnection;
     private _isConnectionExist: boolean;
 
     public get isConnectionExist() { return this._isConnectionExist; }
 
     constructor(private accountService: AccountService, signalR: SignalR) {
         this.connectionObservable = fromPromise(signalR.createConnection(this.createConfig()).start()).pipe(tap(con => {
+            this.connection = con;
             this._isConnectionExist = true;
         }));
     }
 
+    private helper<T>(action: (connnection: ISignalRConnection) => Observable<T>) {
+        if (!this.connection) {
+            return this.connectionObservable.pipe(switchMap(t => action(t)));
+        }
+
+        return action(this.connection);
+    }
+
     public invokeServerMethod(methodName: string, ...parameters: any[]): Observable<any> {
-        return this.connectionObservable.pipe(mergeMap(connection => connection.invoke(methodName, ...parameters)));
+        return this.helper(connection => fromPromise(connection.invoke(methodName, ...parameters)));
     }
 
     public listenServerEvent<T>(eventName: string): Observable<T> {
-        return this.connectionObservable.pipe(mergeMap(connection => connection.listenFor<T>(eventName)));
+        return this.helper(connection => connection.listenFor(eventName));
     }
 
     private createConfig(): SignalRConfiguration {

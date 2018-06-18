@@ -1,5 +1,8 @@
+import { ArrayLikeObservable } from 'rxjs-compat/observable/ArrayLikeObservable';
 import { Component } from '@angular/core';
 import { TypingInformatorService } from '../../services';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 const pulsarDelay = 500;
 
@@ -12,25 +15,17 @@ const pulsarDelay = 500;
 export class TypingInformatorComponent {
     protected pulsar: string;
 
+    public writersInfo$: Observable<string>;
+
     private timer: any;
-    private _info: string;
 
     constructor(private writingInfo: TypingInformatorService) {
-        writingInfo.writingUsers().subscribe(usersNames => {
-            if (usersNames.length > 0) {
+        this.writersInfo$ = writingInfo.writers$.pipe(map(userNames => {
+            if (userNames.length > 0) {
                 this.runPulsar();
-                this._info = usersNames.join(', ') + ' ' + (usersNames.length > 1 ? 'are' : 'is') + ' typing';
-            } else {
-                clearTimeout(this.timer);
-                this.timer = null;
-                this.pulsar = null;
-                this._info = null;
+                return userNames.join(', ') + ' ' + (userNames.length > 1 ? 'are' : 'is') + ' typing';
             }
-        });
-    }
-
-    public get info(): string {
-        return this._info;
+        }));
     }
 
     protected runPulsar() {

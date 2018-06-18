@@ -60,7 +60,6 @@ export function messengerReducer(state = initialState, action: MessengerAction):
             };
         }
         case MessengerActionType.GetMessage: {
-            debugger;
             return {
                 ...state,
                 currentRoomMessages: state.currentRoomMessages.concat(action.payload)
