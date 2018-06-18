@@ -1,1 +1,2 @@
-export * from './room.effect';
+export * from './room.effects';
+export * from './messages.effects';

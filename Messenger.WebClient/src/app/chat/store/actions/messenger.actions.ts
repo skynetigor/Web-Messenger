@@ -3,16 +3,25 @@ import { Action } from '@ngrx/store';
 import { RoomModel } from '../../models';
 
 export const MessengerActionType = {
+    RequestRooms: '[Messenger] Request Rooms',
     RequestEnteringRoom: '[Messenger] Request Entering Room',
     RequestCreatingRoomAction: '[Messenger] Request Creating Room',
+    RequestMessages: '[Messenger] Request Messages',
+    RequestSendingMessage: '[Messenger] Request Sending Message',
+
     EnteredToRoomSuccess: '[Messenger] Entered To Room Success',
     CreatedRoomSuccess: '[Messenger] Created To Room Success',
     UpdateRooms: '[Messenger] Update Rooms',
     UserCountChanged: '[Messenger] User Count Changed',
     GetMessage: '[Messenger] Get Message',
-    RequestSendMessage: '[Messenger] Request Send Message',
-    LoadMessages: '[Messenger] Load Messages'
+    LoadMessages: '[Messenger] Load Messages',
 };
+
+export class RequestRoomsAction implements Action {
+    readonly type = MessengerActionType.RequestRooms;
+
+    constructor() { }
+}
 
 export class RequestEnteringRoomAction implements Action {
     readonly type = MessengerActionType.RequestEnteringRoom;
@@ -22,6 +31,18 @@ export class RequestEnteringRoomAction implements Action {
 
 export class RequestCreatingRoomAction implements Action {
     readonly type = MessengerActionType.RequestCreatingRoomAction;
+
+    constructor(public payload: string) { }
+}
+
+export class RequestMessagesAction implements Action {
+    readonly type = MessengerActionType.RequestMessages;
+
+    constructor(public payload = null) { }
+}
+
+export class RequestSendingMessageAction implements Action {
+    readonly type = MessengerActionType.RequestSendingMessage;
 
     constructor(public payload: string) { }
 }
@@ -50,12 +71,10 @@ export class UserCountChangedAction implements Action {
     constructor(public payload: any) { }
 }
 
-export class RequestSendMessageAction implements Action {
-    readonly type = MessengerActionType.GetMessage;
+export class LoadMessagesAction implements Action {
+    readonly type = MessengerActionType.LoadMessages;
 
-    constructor(public payload: any | any[]) {
-        payload = Array.isArray(payload) ? payload : [payload];
-    }
+    constructor(public payload: any) { }
 }
 
 export class GetMessageAction implements Action {
@@ -64,12 +83,6 @@ export class GetMessageAction implements Action {
     constructor(public payload: any | any[]) {
         payload = Array.isArray(payload) ? payload : [payload];
     }
-}
-
-export class LoadMessagesAction implements Action {
-    readonly type = MessengerActionType.LoadMessages;
-
-    constructor(public payload: any) { }
 }
 
 export declare type MessengerAction =

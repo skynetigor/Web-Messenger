@@ -8,6 +8,7 @@ export interface MessengerState {
     currentRoomMessages: MessageModel[];
     messagesCurrentPage: number;
     messagesTotalPages: number;
+    areMessagesRequested: boolean;
     users: UserModel[];
 }
 
@@ -17,13 +18,14 @@ const initialState: MessengerState = {
     currentRoomId: null,
     messagesCurrentPage: 0,
     messagesTotalPages: 0,
+    areMessagesRequested: false,
     users: []
 };
 
 export function messengerReducer(state = initialState, action: MessengerAction): MessengerState {
     switch (action.type) {
         case MessengerActionType.EnteredToRoomSuccess: {
-const messageModel = action.payload.messagesModel ? action.payload.messagesModel : {};
+            const messageModel = action.payload.messagesModel ? action.payload.messagesModel : {};
 
             return {
                 ...state,
@@ -58,20 +60,21 @@ const messageModel = action.payload.messagesModel ? action.payload.messagesModel
             };
         }
         case MessengerActionType.GetMessage: {
+            debugger;
             return {
                 ...state,
                 currentRoomMessages: state.currentRoomMessages.concat(action.payload)
             };
-        } case MessengerActionType.LoadMessages: {
+        }
+        case MessengerActionType.LoadMessages: {
+            return {
+                ...state,
+                areMessagesRequested: false,
+                currentRoomMessages: action.payload.messages.concat(state.currentRoomMessages),
+                messagesCurrentPage: state.messagesCurrentPage + 1
+            };
+        }
 
-            if (action.payload.messages.length > 0 && state.messagesCurrentPage <= state.messagesTotalPages) {
-                return {
-                    ...state,
-                    currentRoomMessages: action.payload.messages.concat(state.currentRoomMessages),
-                    messagesCurrentPage: state.messagesCurrentPage + 1
-                };
-            }
-        } break;
         default: return state;
     }
 }

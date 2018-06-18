@@ -1,13 +1,15 @@
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/switchMap';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+
 import { ApiUrls } from '../../api-urls';
-import { Observable } from 'rxjs/Observable';
-
 import { UserStorage } from '../services';
-
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
 
 
 @Injectable()
@@ -20,16 +22,15 @@ export class AuthGuard implements CanActivate {
 
         if (user) {
             const url = ApiUrls.checkUser + '?userId=' + user.id + '&userName=' + user.userName;
-            return this.http.get(url).switchMap(response => {
-                return Observable.of(true);
-            }).catch(response => {
+            return this.http.get(url).pipe(map(response => true), catchError(response => {
                 if (response.status === 401) {
                     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-                    return Observable.of(false);
+                    return of(false);
                 }
-            })
+            }));
         }
+
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-        return Observable.of(false);
+        return of(false);
     }
 }

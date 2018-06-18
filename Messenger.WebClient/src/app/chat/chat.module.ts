@@ -19,7 +19,7 @@ import {
 } from './components';
 import { ConnectionResolver, MessageService, RoomService, TypingInformatorService } from './services';
 import { reducers } from './store';
-import { MessengerEffects } from './store/effects';
+import { RoomEffects, MessagesEffects } from './store/effects';
 
 export function createConfig(): SignalRConfiguration {
     const c = new SignalRConfiguration();
@@ -35,7 +35,7 @@ export function createConfig(): SignalRConfiguration {
         SignalRModule.forRoot(createConfig),
         InfiniteScrollModule,
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([MessengerEffects])
+        EffectsModule.forRoot([RoomEffects, MessagesEffects])
     ],
     declarations: [
         ChatBoxComponent,

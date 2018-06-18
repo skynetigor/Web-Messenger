@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Messenger.Core.BLL.Interfaces;
+using Messenger.Core.DAL.Infrastructure;
 using Messenger.Core.DAL.Models;
 using Messenger.WebAPI.ViewModels.Chat;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Hubs;
+using MongoDB.Bson.IO;
+using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace Messenger.WebAPI.Hubs
 {
@@ -14,14 +17,13 @@ namespace Messenger.WebAPI.Hubs
     [Authorize]
     public class ChatHub : AbstractChatHub
     {
-        private const int RemoveRoomTime = 10000;
-
         public ChatHub(
             IRoomsManager roomsManager,
             IMapper mapper,
             IMessageManager messageManager)
             : base(roomsManager, mapper, messageManager)
         {
+
         }
 
         public object CreateRoom(string name)
@@ -50,37 +52,25 @@ namespace Messenger.WebAPI.Hubs
 
             room = this.RoomProcess(room);
             var users = this.Mapper.Map<IEnumerable<User>, IEnumerable<UserJson>>(room.Users);
-            var messagesJson = this.GetMessage(room.Id, messageCount, 1);
             return new
             {
+                roomId = id,
                 users = users,
-                roomId = room.Id,
-                messagesModel = messagesJson
+                messagesModel = this.GetMessage(room.Id, messageCount, 1)
             };
+
         }
 
-        public object GetMessage(string roomId, int messageCount, int messagePage)
+        private object GetMessage(string roomId, int messageCount, int messagePage)
         {
-            var model = this.MessageManager
-                .Repository
-                .GetMessages(new Room { Id = roomId }, messageCount, messagePage);
-
-            if (model.TotalMessage == 0)
-            {
-                return null;
-            }
-
-            if (messagePage > model.TotalPages)
-            {
-                return new { totalPages = model.TotalPages };
-            }
-
-            var messagesJson = this.Mapper
-                .Map<IEnumerable<Message>, IEnumerable<MessageJson>>(model.Messages);
+            var model = this.MessageManager.Repository.GetMessages(roomId, messageCount, messagePage);
+            var response = this.Mapper
+                .Map<MessagesResponseModel, MessagesJsonResponseModel>(model);
             return new
             {
-                messages = messagesJson,
-                totalPages = model.TotalPages
+                messages = response.Messages,
+                totalPages = response.TotalPages,
+                totalMessages = response.TotalMessages
             };
         }
 

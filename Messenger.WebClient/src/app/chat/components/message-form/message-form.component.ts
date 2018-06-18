@@ -14,7 +14,7 @@ export class MessageFormComponent {
 
     public sendMessage(): void {
         if (this.text.length > 0) {
-            this.messageService.sendMessage(this.roomservice.currentRoomId, this.text);
+            this.messageService.sendMessage(this.text);
             this.text = '';
         }
     }
@@ -24,6 +24,6 @@ export class MessageFormComponent {
             this.sendMessage();
             return false;
         }
-        this.messageService.invokeWritinMessageEvent(this.roomservice.currentRoomId);
+        // this.messageService.invokeWritinMessageEvent(this.roomservice.currentRoomId);
     }
 }

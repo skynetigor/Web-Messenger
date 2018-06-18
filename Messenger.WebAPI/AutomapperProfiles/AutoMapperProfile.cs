@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.Core.DAL.Infrastructure;
 using Messenger.Core.DAL.Models;
 using Messenger.WebAPI.ViewModels.Chat;
 
@@ -16,6 +17,7 @@ namespace Messenger.WebAPI.AutomapperProfiles
             });
             this.CreateMap<Room, RoomJson>();
             this.CreateMap<User, UserJson>();
+            this.CreateMap<MessagesResponseModel, MessagesJsonResponseModel>();
         }
     }
 }

@@ -46,7 +46,7 @@ export class ChatBoxComponent implements OnInit, AfterViewChecked {
         }
 
         if (element.scrollTop <= scrollLoading && element.scrollTop !== 0) {
-            this.messageService.getMessages();
+            this.messageService.loadMessages();
         }
 
         if (atBottom) {

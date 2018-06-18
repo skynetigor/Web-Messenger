@@ -9,10 +9,10 @@ namespace Messenger.Core.DAL.Infrastructure
         {
             this.TotalPages = totalPages;
             this.Messages = messages;
-            this.TotalMessage = totalMessage;
+            this.TotalMessages = totalMessage;
         }
 
-        public int TotalMessage { get; }
+        public int TotalMessages { get; }
 
         public int TotalPages { get; }
 

@@ -1,14 +1,11 @@
-import { Router } from '@angular/router';
-import { UserStorage } from './user-storage';
-import { Http } from '@angular/http';
-import { HttpCustomClient } from './httpclient';
-import { SignInModel, RegisterModel, UserModel } from '../models';
 import { Injectable } from '@angular/core';
-import { ApiUrls } from '../../api-urls';
+import { Router } from '@angular/router';
 
-const isNotNullOrUndefined = (obj: any): boolean => {
-    return obj === null || obj === undefined;
-};
+import { ApiUrls } from '../../api-urls';
+import { RegisterModel, SignInModel, UserModel } from '../models';
+import { HttpCustomClient } from './httpclient';
+import { UserStorage } from './user-storage';
+
 
 @Injectable()
 export class AccountService {
@@ -38,6 +35,7 @@ export class AccountService {
             if (data) {
                 this.errors = [];
 
+                // tslint:disable-next-line:forin
                 for (const key in data) {
                     const obj = data[key];
                     this.errors.push(obj);
@@ -47,7 +45,6 @@ export class AccountService {
     }
 
     constructor(private http: HttpCustomClient, private router: Router, private userStorage: UserStorage) { }
-
 
     public signIn(model: SignInModel): void {
         this.authorize(model, ApiUrls.signIn);

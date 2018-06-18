@@ -15,8 +15,7 @@ export class ConnectionResolver {
     public get isConnectionExist() { return this._isConnectionExist; }
 
     constructor(private accountService: AccountService, signalR: SignalR) {
-        const config = this.createConfig();
-        this.connectionObservable = fromPromise(signalR.createConnection(config).start()).pipe(tap(con => {
+        this.connectionObservable = fromPromise(signalR.createConnection(this.createConfig()).start()).pipe(tap(con => {
             this._isConnectionExist = true;
         }));
     }

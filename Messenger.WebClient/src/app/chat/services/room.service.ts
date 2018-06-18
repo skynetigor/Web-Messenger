@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { map, merge } from 'rxjs/operators';
-import { MessengerState } from 'src/app/chat/store/reducers';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AccountService, HttpCustomClient, UserModel } from '../../account';
-import { RequestCreatingRoomAction, RequestEnteringRoomAction, UpdateRoomsAction, UserCountChangedAction } from '../store/actions';
-import { RoomModel } from './../models/room.model';
-import { ConnectionResolver } from './connection-resolver';
 import { State } from '../store';
-import { ApiUrls } from 'src/app/api-urls';
+import {
+    RequestCreatingRoomAction,
+    RequestEnteringRoomAction,
+    RequestRoomsAction,
+    UpdateRoomsAction,
+    UserCountChangedAction,
+} from '../store/actions';
+import { RoomModel } from './../models/room.model';
 import { AbstractService } from './abstract.service';
+import { ConnectionResolver } from './connection-resolver';
 
 const currentRoom = 'currentRoom';
 
@@ -21,28 +25,40 @@ export class RoomService extends AbstractService {
 
     public currentRoom$: Observable<RoomModel>;
 
-    public set currentRoomId(value: string) {
-        localStorage.setItem(currentRoom, value);
-    }
+    public currentRoomId: string;
 
     constructor(
         private accountService: AccountService,
         connectionResolver: ConnectionResolver,
-        httpClient: HttpCustomClient,
+        private httpClient: HttpCustomClient,
         store: Store<State>
     ) {
-        super(connectionResolver, httpClient, store);
+        super(connectionResolver, store);
+
+        store.dispatch(new RequestRoomsAction());
 
         this.users$ = store.select(t => t.messenger.users);
         this.rooms$ = store.select(t => t.messenger.rooms);
 
+        const roomIdFromLocalStorage = localStorage.getItem(currentRoom);
+
+        if (roomIdFromLocalStorage) {
+            this.enterRoom(roomIdFromLocalStorage);
+        }
+
         this.updateStateFromEvent('OnUserCountChanged', t => new UserCountChangedAction(t));
         this.updateStateFromEvent('onRoomsCountChange', t => new UpdateRoomsAction(t));
 
-        this.updateStateFromObservable(this.httpClient.post(ApiUrls.getRooms, null), t => new UpdateRoomsAction(t));
-
         this.currentRoom$ = combineLatest(this.rooms$, store.select(t => t.messenger.currentRoomId))
-            .pipe(map(([rooms, currentRoomId]) => rooms.find(t => t.id === currentRoomId)));
+            .pipe(
+            map(([rooms, currentRoomId]) => rooms.find(t => t.id === currentRoomId)));
+
+        this.subscribe(this.currentRoom$, room => {
+            if (room && (this.currentRoomId !== room.id || !this.currentRoomId)) {
+                this.currentRoomId = room.id;
+                localStorage.setItem(currentRoom, this.currentRoomId);
+            }
+        });
     }
 
     public enterRoom(id: string): void {
