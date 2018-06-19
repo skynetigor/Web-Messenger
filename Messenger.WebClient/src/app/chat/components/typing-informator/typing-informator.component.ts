@@ -1,8 +1,8 @@
-import { ArrayLikeObservable } from 'rxjs-compat/observable/ArrayLikeObservable';
 import { Component } from '@angular/core';
-import { TypingInformatorService } from '../../services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { TypingInformatorService } from '../../services';
 
 const pulsarDelay = 500;
 
