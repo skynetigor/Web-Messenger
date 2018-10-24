@@ -1,0 +1,5 @@
+<chat-page-mobile *ngIf="(isMobile$ | async); else desktop"></chat-page-mobile>
+
+<ng-template #desktop>
+    <chat-page-desktop></chat-page-desktop>
+</ng-template>

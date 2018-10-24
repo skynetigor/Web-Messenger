@@ -1,0 +1,22 @@
+<div class="message-row clearfix">
+    <div *ngIf="!isCurrentUser" class="title">
+        <p>
+            <span class="username">{{message.userName}}</span>
+        </p>
+    </div>
+    <div>
+        <div class="message-container">
+
+            <div [class.current]="isCurrentUser" class="message ">
+                <p>
+                    {{message.text}}
+                </p>
+            </div>
+        </div>
+        <div class="date">
+            <p>
+                {{message.date}}
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,13 +1,13 @@
 <!--component html goes here -->
 <div class="center-form center-of-block">
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card panel-default">
+        <div class="card-header panel-heading">
             <span>{{localize('loginFormTitle', 'Login form')}}</span>
             <span *ngFor="let lang of availableLangs">
 <span (click)="changeLocalization(lang)">{{lang}}</span>
             </span>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="error-container">
                 <p *ngFor="let error of errors">{{error}}</p>
             </div>

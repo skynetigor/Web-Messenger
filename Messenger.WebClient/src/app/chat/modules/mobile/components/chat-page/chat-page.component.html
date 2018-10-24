@@ -1,0 +1,12 @@
+<div class="center-of-block full-screen">
+    <div class="mobile-container">
+        <div class="content">
+            <div>
+                <div *ngIf="isRoomsShowed$ | async" class="left sides">
+                    <rooms-list-mobile></rooms-list-mobile>
+                </div>
+                <chat-box-mobile *ngIf="isInRoom$ | async"></chat-box-mobile>
+            </div>
+        </div>
+    </div>
+</div>

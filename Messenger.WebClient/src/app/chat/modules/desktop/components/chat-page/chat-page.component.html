@@ -1,0 +1,34 @@
+<div class="center-of-block full-screen">
+    <div class="chat-page">
+        <div>
+            <div class="rooms">
+                <rooms-list-desktop></rooms-list-desktop>
+            </div>
+            <ng-container *ngIf="(isInRoom$ | async); else chat">
+                <div class="chat-box">
+                    <chat-box-desktop></chat-box-desktop>
+                </div>
+                <div class="users">
+                    <users-list-desktop></users-list-desktop>
+                </div>
+            </ng-container>
+            <ng-template #chat>
+                <div class="chat-box">
+                    <div class="panel panel-default wrapper">
+                        <div class="center-of-block">
+                                <h1>You sign in as "{{currentUser.userName}}". Please, enter to existing room or create own!</h1>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isConnectionExist" class="modalDialog">
+    <div class="center-of-block">
+        <div>
+            <h1>Сonnection to the server...</h1>
+        </div>
+    </div>
+</div>

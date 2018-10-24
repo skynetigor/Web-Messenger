@@ -7,19 +7,12 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { SignalRConfiguration, SignalRModule } from 'ng2-signalr';
 
 import { ChatRouter } from './chat-router';
-import {
-    ChatBoxComponent,
-    ChatPageComponent,
-    MessageComponent,
-    MessageFormComponent,
-    ModalComponent,
-    RoomsListComponent,
-    TypingInformatorComponent,
-    UsersListComponent,
-} from './components';
+import { ChatDesktopModule } from './modules';
 import { ConnectionResolver, MessageService, RoomService, TypingInformatorService } from './services';
 import { reducers } from './store';
-import { RoomEffects, MessagesEffects } from './store/effects';
+import { MessagesEffects, RoomEffects } from './store/effects';
+import { ChatRootComponent } from './components';
+import { ChatMobileModule } from './modules/mobile/chat-mobile.module';
 
 export function createConfig(): SignalRConfiguration {
     const c = new SignalRConfiguration();
@@ -35,18 +28,11 @@ export function createConfig(): SignalRConfiguration {
         SignalRModule.forRoot(createConfig),
         InfiniteScrollModule,
         StoreModule.forRoot(reducers),
-        EffectsModule.forRoot([RoomEffects, MessagesEffects])
+        EffectsModule.forRoot([RoomEffects, MessagesEffects]),
+        ChatDesktopModule,
+        ChatMobileModule
     ],
-    declarations: [
-        ChatBoxComponent,
-        MessageFormComponent,
-        RoomsListComponent,
-        UsersListComponent,
-        ChatPageComponent,
-        MessageComponent,
-        ModalComponent,
-        TypingInformatorComponent
-    ],
+    declarations: [ChatRootComponent],
     providers: [
         ConnectionResolver,
         TypingInformatorService,

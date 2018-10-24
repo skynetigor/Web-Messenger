@@ -1,0 +1,53 @@
+p{
+    margin: 0;
+    padding: 0;
+}
+
+.right{
+    text-align: right;
+}
+
+.message-row{
+    margin: 0px 0px 10px 0px;
+    width: 100%;
+}
+
+.title{
+    margin: 0px 15px 0px 15px;
+}
+
+.message{
+    min-height: 50px;
+    width: 85%;
+    background-color: #efeff9;
+    border-radius: 8px;
+    border: 2px solid #e4dddd
+}
+
+.message p{
+    padding: 12px;
+    font-size: 1.15em;
+}
+
+.current{
+    float: right;
+    background-color: #a1e0f9;
+}
+
+.message-container{
+    width: 90%;
+height: 100%;    
+    float: left;
+}
+
+.date{
+    width: 10%;
+    float: right;
+    font-size: 0.7em;
+    text-align: center;
+    height: 100%;
+}
+
+.username{
+font-size: 1.25em;
+}

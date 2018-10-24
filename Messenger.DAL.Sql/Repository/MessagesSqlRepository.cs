@@ -17,6 +17,8 @@ namespace Messenger.DAL.Sql.Repository
             this.Query = this.DbSet
                 .Include(m => m.Room)
                 .Include(m => m.User);
+
+            var queryable = this.DbSet.Where(t => t.Room != null && t.User != null).Include(t => t.Room).Include(t => t.User).ToList();
         }
 
         public MessagesResponseModel GetMessages(string roomId, int count, int page)

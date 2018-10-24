@@ -1,0 +1,21 @@
+<div class="card rooms-list">
+    <div class="card-header">
+        Rooms            
+        <i (click)="close()" class="fa fa-arrow-left">_      CLOSE</i>
+    </div>
+    <div class="card-body fill">
+        <div class="rooms-list">
+            <div class="btn-group-vertical stretch-x">
+                <button *ngFor="let room of (rooms$ | async)" [ngClass]="{'currentRoom': room.id === (currentRoom$ | async).id}" class="btn btn-default"  (click)="changeRoom(room.id)">{{room.name}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="center-of-block">
+            <div>
+                <button (click)="openModal()" href="#openModal" class="btn btn-default">Create room</button>
+                <modal-mobile (onClose)="closeModal()" (onCreate)="createRoom($event)" *ngIf="isModalOpened"></modal-mobile>
+            </div>
+        </div>
+    </div>
+</div>

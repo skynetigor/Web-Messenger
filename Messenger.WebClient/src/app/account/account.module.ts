@@ -36,6 +36,6 @@ export class AccountModule {
         return {
             ngModule: AccountModule,
             providers: providers
-        }
+        };
     }
 }
