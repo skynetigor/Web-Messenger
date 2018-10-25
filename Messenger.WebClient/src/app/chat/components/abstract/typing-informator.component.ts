@@ -18,6 +18,8 @@ export abstract class TypingInformatorComponent {
             if (userNames.length > 0) {
                 this.runPulsar();
                 return userNames.join(', ') + ' ' + (userNames.length > 1 ? 'are' : 'is') + ' typing';
+            } else {
+                clearInterval(this.timer);
             }
         }));
     }
