@@ -20,6 +20,8 @@ export abstract class TypingInformatorComponent {
                 return userNames.join(', ') + ' ' + (userNames.length > 1 ? 'are' : 'is') + ' typing';
             } else {
                 clearInterval(this.timer);
+                this.timer = false;
+                this.pulsar = '';
             }
         }));
     }
