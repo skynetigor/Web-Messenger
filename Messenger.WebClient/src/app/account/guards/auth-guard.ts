@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.userStorage.getUser();
-
+        console.log(user);
         if (user) {
             const url = ApiUrls.checkUser + '?userId=' + user.id + '&userName=' + user.userName;
             return this.http.get(url).pipe(map(response => true), catchError(response => {

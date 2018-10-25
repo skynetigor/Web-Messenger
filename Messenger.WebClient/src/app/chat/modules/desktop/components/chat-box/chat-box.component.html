@@ -1,7 +1,7 @@
 <div class="card wrapper">
     <!-- <audio #audioNotification src="dist\webclient\assets\sms.mp3"></audio> -->
     <div class="card-header">Chat</div>
-    <div class="card-body chat-container fill">
+    <div class="chat-container fill">
         <div (scroll)="onScroll()" #scroll class="chat">
             <message-desktop *ngFor="let message of (messages$ | async)" [setMessage]="message"></message-desktop>
         </div>

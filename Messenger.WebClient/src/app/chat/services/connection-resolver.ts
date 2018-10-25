@@ -16,10 +16,14 @@ export class ConnectionResolver {
     public get isConnectionExist() { return this._isConnectionExist; }
 
     constructor(private accountService: AccountService, signalR: SignalR) {
-        this.connectionObservable = fromPromise(signalR.createConnection(this.createConfig()).start()).pipe(tap(con => {
-            this.connection = con;
-            this._isConnectionExist = true;
-        }));
+        const config = this.createConfig();
+
+        if (config) {
+            this.connectionObservable = fromPromise(signalR.createConnection(this.createConfig()).start()).pipe(tap(con => {
+                this.connection = con;
+                this._isConnectionExist = true;
+            }));
+        }
     }
 
     private helper<T>(action: (connnection: ISignalRConnection) => Observable<T>) {
@@ -40,7 +44,13 @@ export class ConnectionResolver {
 
     private createConfig(): SignalRConfiguration {
         const c = new SignalRConfiguration();
-        const token = this.accountService.currentUser.token;
+        const user = this.accountService.currentUser;
+
+        if(!user) {
+            return null;
+        }
+
+        const token = user.token;
         c.hubName = ApiUrls.hubName;
         c.qs = { token: token };
         c.url = ApiUrls.chatHub;

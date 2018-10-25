@@ -7,6 +7,7 @@ import { appRoutes } from './app-router';
 import { AppComponent } from './app.component';
 import { ILocalizationService, LocalizationService } from './services/localization.service';
 import { SharedModule } from './shared';
+import { LoaderModule } from './chat/modules/loader';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +16,8 @@ import { SharedModule } from './shared';
     BrowserModule,
     FormsModule,
     appRoutes,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    LoaderModule
   ],
   providers: [
     { provide: ILocalizationService, useClass: LocalizationService },

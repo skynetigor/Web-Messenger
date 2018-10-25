@@ -1,17 +1,9 @@
 @import '../../../../chat.css';
 
-/* .actions{
-    height: 20%;
-    padding: 15px;
-    min-height: 105px;
-} */
-
 .create {
 	margin: 14px 0px 0px 0px;
     float: right;
 }
-
-
 
 .modalDialog {
         position: fixed;

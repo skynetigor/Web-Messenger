@@ -5,6 +5,6 @@ export const appRoutes = RouterModule.forRoot([
     { path: 'login', component: LoginFormComponent },
     { path: 'registration', component: RegistrationFormComponent },
     { path: 'chat', loadChildren: './chat/chat.module#ChatModule', canActivate: [AuthGuard] },
-    // { path: '', redirectTo: 'chat', pathMatch: 'prefix' },
-    // { path: '**', redirectTo: 'chat' }
+    { path: '', redirectTo: 'chat', pathMatch: 'prefix' },
+    { path: '**', redirectTo: 'chat' }
 ]);

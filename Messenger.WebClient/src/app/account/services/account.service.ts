@@ -5,6 +5,7 @@ import { ApiUrls } from '../../api-urls';
 import { RegisterModel, SignInModel, UserModel } from '../models';
 import { HttpCustomClient } from './httpclient';
 import { UserStorage } from './user-storage';
+import { Observable, of } from 'rxjs';
 
 
 @Injectable()
@@ -21,8 +22,9 @@ export class AccountService {
         return this.user;
     }
 
-    private authorize(model: any, url: string) {
-        this.http.post(url, model).subscribe(response => {
+    private authorize(model: any, url: string): Observable<any> {
+        const obs = this.http.post(url, model);
+        obs.subscribe(response => {
             const data: any = response;
             if (data) {
                 this.errors = [];
@@ -42,22 +44,25 @@ export class AccountService {
                 }
             }
         });
+
+        return obs;
     }
 
     constructor(private http: HttpCustomClient, private router: Router, private userStorage: UserStorage) { }
 
-    public signIn(model: SignInModel): void {
-        this.authorize(model, ApiUrls.signIn);
+    public signIn(model: SignInModel): Observable<any> {
+       return this.authorize(model, ApiUrls.signIn);
     }
 
-    public register(model: RegisterModel): void {
-        this.authorize(model, ApiUrls.register);
+    public register(model: RegisterModel): Observable<any> {
+        return this.authorize(model, ApiUrls.register);
     }
 
-    public signOut(): void {
+    public signOut(): Observable<any> {
         this.userStorage.clearUser();
         this.isInRoom = false;
         this.router.navigate(['/login']);
+        return of();
     }
 
     public clearErrors(): void {
