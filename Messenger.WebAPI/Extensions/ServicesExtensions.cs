@@ -10,7 +10,7 @@ namespace Messenger.WebAPI.Extensions
     {
         private const string ServerMsg = "Application is running on \"{0}\" database. \n";
 
-        public static IServiceCollection AddMessengerServices(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddMessengerServices(this IServiceCollection services, IConfiguration configuration)
         {
             var dbSet = configuration.GetSection("DbSettings");
             var dbsettings = new DbSettings(Enum.Parse<DatabaseType>(dbSet["dbType"], true), dbSet["connectionString"]);

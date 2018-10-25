@@ -17,9 +17,9 @@
     },
     "Messenger.WebAPI": {
       "commandName": "Project",
-      "commandLineArgs": "--url http://localhost:5000",
       "launchBrowser": true,
       "environmentVariables": {
+        "url": "http://10.10.41.4:2000",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://192.168.0.105:2000/"
