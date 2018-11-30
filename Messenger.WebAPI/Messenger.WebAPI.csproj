@@ -4,21 +4,18 @@
     <OutputType>EXE</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <CodeAnalysisRuleSet>../StyleCop/Nix.StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+    <UserSecretsId>cfa79af0-c5bf-4ad4-8436-9471c70949ab</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Data\**" />
     <Compile Remove="Models\**" />
-    <Compile Remove="wwwroot\**" />
     <Content Remove="Data\**" />
     <Content Remove="Models\**" />
-    <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Models\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="Data\**" />
     <None Remove="Models\**" />
-    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,16 +34,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +57,23 @@
 
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\chat-chat-module.js" />
+    <None Include="wwwroot\chat-chat-module.js.map" />
+    <None Include="wwwroot\main.js" />
+    <None Include="wwwroot\main.js.map" />
+    <None Include="wwwroot\polyfills.js" />
+    <None Include="wwwroot\polyfills.js.map" />
+    <None Include="wwwroot\runtime.js" />
+    <None Include="wwwroot\runtime.js.map" />
+    <None Include="wwwroot\scripts.js" />
+    <None Include="wwwroot\scripts.js.map" />
+    <None Include="wwwroot\styles.js" />
+    <None Include="wwwroot\styles.js.map" />
+    <None Include="wwwroot\vendor.js" />
+    <None Include="wwwroot\vendor.js.map" />
   </ItemGroup>
 
   <ItemGroup>

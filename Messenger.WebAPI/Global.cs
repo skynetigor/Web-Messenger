@@ -8,13 +8,16 @@ namespace Messenger.WebAPI
     public static class Global
     {
         private const string ASPNETCORE_ENVIRONMENT = nameof(ASPNETCORE_ENVIRONMENT);
+        private static IConfiguration configuration;
 
-        public static IConfiguration BuilConfiguration(string[] commandLineArgs)
+        public static IConfiguration Configuration => configuration;
+
+        public static void BuilConfiguration(string[] commandLineArgs)
         {
             var variables = Environment.GetEnvironmentVariables();
             var contentRootPath = GetContentRootPath();
 
-            return new ConfigurationBuilder()
+            configuration = new ConfigurationBuilder()
                  .SetBasePath(Path.Combine(contentRootPath, "Configuration"))
                  .AddJsonFile("appsettings.json", optional: false)
                  .AddJsonFile($"appsettings.{variables[ASPNETCORE_ENVIRONMENT]}.json", optional: true)

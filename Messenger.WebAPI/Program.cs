@@ -1,6 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
 
 namespace Messenger.WebAPI
 {
@@ -10,7 +8,8 @@ namespace Messenger.WebAPI
 
         public static void Main(string[] args)
         {
-            var configuration = Global.BuilConfiguration(args);
+            Global.BuilConfiguration(args);
+            var configuration = Global.Configuration;
 
             var url = configuration[UrlKey];
 
@@ -24,8 +23,6 @@ namespace Messenger.WebAPI
                 .Build();
 
             host.Run();
-
-            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
         }
     }
 }

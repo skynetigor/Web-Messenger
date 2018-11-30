@@ -5,7 +5,7 @@ namespace Messenger.DAL.Sql.Context
 {
     internal class ApplicationContext : DbContext
     {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+        public ApplicationContext(DbContextOptions options)
             : base(options)
         {
             this.Database.EnsureCreated();

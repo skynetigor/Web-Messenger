@@ -6,7 +6,7 @@
     "start": "ng serve --proxy-config proxy.config.json",
     "start-rpoxy": "ng serve --proxy-config proxy.config.json",
     "build-prod": "ng build web-messenger --output-path=../../app/wwwroot --prod",
-    "build-prod-watch": "ng build web-messenger --output-path=../../app/wwwroot --prod --watch",
+    "build-prod-watch": "ng build web-messenger --output-path=../Messenger.WebAPI/bin/Debug/netcoreapp2.0/wwwroot  --prod --watch",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

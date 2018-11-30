@@ -12,9 +12,10 @@ namespace Messenger.WebAPI
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            this.Configuration = configuration;
+            //var b = env.get
+            Configuration = Global.Configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -22,11 +23,11 @@ namespace Messenger.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IStringLocalizationManager, StringLocalizationManager>()
-                .Configure<DbSettings>(this.Configuration)
+                .Configure<DbSettings>(Configuration)
                 .AddCors()
                 .AddJwtAuthentication()
                 .AddAutoMapper()
-                .AddMessengerServices(this.Configuration)
+                .AddMessengerServices(Configuration)
                 .AddSignalR(o => o.Hubs.EnableDetailedErrors = true);
             services.AddMvc();
         }
