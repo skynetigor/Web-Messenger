@@ -32,8 +32,9 @@ export class AccountService {
                 this.userStorage.setUser(data);
                 this.router.navigate(['/chat']);
             }
-        }, error => {
-            const data: any = error.json();
+        }, e => {
+            const data: any = e.error.errors;
+            
             if (data) {
                 this.errors = [];
 
@@ -43,6 +44,8 @@ export class AccountService {
                     this.errors.push(obj);
                 }
             }
+
+            console.log(e);
         });
 
         return obs;

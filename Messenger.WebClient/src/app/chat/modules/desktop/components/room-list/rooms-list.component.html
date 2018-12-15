@@ -3,14 +3,14 @@
     <div class="card-body fill">
         <div class="rooms-list">
             <div class="btn-group-vertical">
-                <button *ngFor="let room of (rooms$ | async)" [ngClass]="{'currentRoom': room.id === (currentRoom$ | async).id}" class="btn btn-default"  (click)="changeRoom(room.id)">{{room.name}}</button>
+                <button *ngFor="let room of (rooms$ | async)" [ngClass]="{'currentRoom': room.id === (currentRoom$ | async).id}" class="btn btn-outline-primary"  (click)="changeRoom(room.id)">{{room.name}}</button>
             </div>
         </div>
     </div>
     <div class="actions">
         <div class="center-of-block">
             <div>
-                <button (click)="openModal()" href="#openModal" class="btn btn-default">Create room</button>
+                <button (click)="openModal()" href="#openModal" class="btn btn-outline-secondary">Create room</button>
                 <modal-desktop (onClose)="closeModal()" (onCreate)="createRoom($event)" *ngIf="isModalOpened"></modal-desktop>
             </div>
         </div>
