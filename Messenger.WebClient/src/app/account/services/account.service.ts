@@ -33,7 +33,7 @@ export class AccountService {
                 this.router.navigate(['/chat']);
             }
         }, e => {
-            const data: any = e.error.errors;
+            const data: any = e.error;
             
             if (data) {
                 this.errors = [];
