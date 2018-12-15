@@ -41,7 +41,7 @@ export class AccountService {
                 // tslint:disable-next-line:forin
                 for (const key in data) {
                     const obj = data[key];
-                    this.errors.push(obj);
+                    this.errors = this.errors.concat(obj);
                 }
             }
 
