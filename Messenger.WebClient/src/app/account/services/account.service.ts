@@ -34,7 +34,6 @@ export class AccountService {
             }
         }, e => {
             const data: any = e.error;
-            
             if (data) {
                 this.errors = [];
 
