@@ -32,7 +32,7 @@ namespace Messenger.BLL.Services
             var currentRoom = user.Room;
             if (currentRoom != null)
             {
-                var a = currentRoom.Users.GetType();
+                var t = currentRoom.Users.GetType();
                 currentRoom.Users.Remove(user);
                 this.roomsRepository.Update(currentRoom);
             }
@@ -42,7 +42,8 @@ namespace Messenger.BLL.Services
             {
                 var count = this.roomsRepository
                     .GetEntities()
-                    .Count(r => this.RoomMatches(room, r)) + 1;
+                    .Where(r => this.RoomMatches(room, r))
+                    .Count() + 1;
                 room.Name += $" ({count})";
             }
 
@@ -58,7 +59,6 @@ namespace Messenger.BLL.Services
 
             if (currentRoom != null && room.Id != currentRoom.Id)
             {
-                var a = currentRoom.Users.GetType();
                 currentRoom.Users.Remove(user);
                 this.roomsRepository.Update(currentRoom);
             }

@@ -5,8 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MongoORM\MongoODM.csproj" />
+<<<<<<< Updated upstream
+    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+=======
+    <ProjectReference Include="..\..\DocumentDb\src\DocDb.Core\DocDb.Core.csproj" />
+    <ProjectReference Include="..\..\DocumentDb\src\DocDb.Mongo\DocDb.Mongo.csproj" />
+>>>>>>> Stashed changes
     <ProjectReference Include="..\Messenger.Core\Messenger.Core.csproj" />
+    <ProjectReference Include="..\MongoORM\MongoORM.csproj" />
   </ItemGroup>
 
 </Project>

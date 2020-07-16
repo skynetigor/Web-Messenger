@@ -43,7 +43,7 @@ namespace Messenger.WebAPI.Controllers
                     case RegistrationStatus.Success: return this.Json(this.CreateToken(user));
                     case RegistrationStatus.UserAlreadyExist:
                         var error = string.Format(UserAlreadyExist, model.UserName);
-                        this.ModelState.AddModelError(nameof(UserAlreadyExist), error);
+                        this.ModelState.AddModelError("errors", error);
                         break;
                 }
             }

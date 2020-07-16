@@ -9,7 +9,11 @@ namespace Messenger.DAL.MongoDB.Repositories
         public RoomsMongoRepository(MongoAppContext context)
             : base(context)
         {
+<<<<<<< Updated upstream
             this.Query = this.ModelsProvider.Include(m => m.Users);
+=======
+            this.Query = this.ModelsProvider.UseLazyLoading().Include(m => m.Users);
+>>>>>>> Stashed changes
         }
     }
 }

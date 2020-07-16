@@ -11,10 +11,18 @@ namespace Messenger.DAL.Sql
 {
     public class SqlInstaller : IDataInstaller
     {
-        public void Install(IServiceCollection serviceCollection, DbSettings dbSettings)
-        {
-            Action<DbContextOptionsBuilder> dbTypeAction;
+        private readonly DbSettings dbSettings;
 
+        public SqlInstaller(DbSettings dbSettings)
+        {
+            this.dbSettings = dbSettings;
+        }
+
+        public void Install(IServiceCollection serviceCollection)
+        {
+            DbContextOptionsBuilder dbContextOptionsBuilder = new DbContextOptionsBuilder();
+
+            Action<DbContextOptionsBuilder> dbTypeAction;
             switch (dbSettings.DbType)
             {
                 case DatabaseType.Mysql: dbTypeAction = db => db.UseMySql(dbSettings.ConnectionString); break;

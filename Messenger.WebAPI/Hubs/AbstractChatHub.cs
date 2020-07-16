@@ -4,6 +4,7 @@ using AutoMapper;
 using Messenger.Core.BLL.Interfaces;
 using Messenger.Core.DAL.Interfaces;
 using Messenger.Core.DAL.Models;
+using Messenger.WebAPI.Abstracts;
 using Messenger.WebAPI.Extensions;
 using Messenger.WebAPI.ViewModels.Chat;
 using Microsoft.AspNetCore.SignalR;
@@ -25,6 +26,7 @@ namespace Messenger.WebAPI.Hubs
 
         protected User CurrentUser
         {
+            
             get { return this.currentUser ?? (this.currentUser = this.Context.User.GetUser()); }
         }
 

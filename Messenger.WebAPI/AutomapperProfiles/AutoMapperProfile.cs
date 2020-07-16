@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.Core.DAL.Infrastructure;
 using Messenger.Core.DAL.Models;
 using Messenger.WebAPI.ViewModels.Chat;
 
@@ -8,12 +9,15 @@ namespace Messenger.WebAPI.AutomapperProfiles
     {
         public AutoMapperProfile()
         {
-            this.CreateMap<Message, MessageJson>().ConstructProjectionUsing(m => new MessageJson
+            this.CreateMap<Message, MessageJson>().ProjectUsing(m => new MessageJson
             {
                 UserName = m.User.UserName,
+                Date = m.Date.ToString("HH:mm"),
+                Text = m.Text
             });
             this.CreateMap<Room, RoomJson>();
             this.CreateMap<User, UserJson>();
+            this.CreateMap<MessagesResponseModel, MessagesJsonResponseModel>();
         }
     }
 }

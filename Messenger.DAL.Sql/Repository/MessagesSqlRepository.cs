@@ -17,36 +17,20 @@ namespace Messenger.DAL.Sql.Repository
             this.Query = this.DbSet
                 .Include(m => m.Room)
                 .Include(m => m.User);
+
+            var queryable = this.DbSet.Where(t => t.Room != null && t.User != null).Include(t => t.Room).Include(t => t.User).ToList();
         }
 
-        public MessagesResponseModel GetMessages(Room room, int count, int page)
+        public MessagesResponseModel GetMessages(string roomId, int count, int page)
         {
-            var messageQuery = this.Query.Where(m => m.Room.Id == room.Id)
-                .OrderBy(m => m.Id);
-            var totalMessages = messageQuery.Count();
+            var messageQuery = this.Query.Where(m => m.Room.Id == roomId)
+                .OrderByDescending(m => m.Date);
 
-            if (totalMessages == 0)
-            {
-                return new MessagesResponseModel(0, 0, new List<Message>());
-            }
-            else if (totalMessages <= count)
-            {
-                return new MessagesResponseModel(1, totalMessages, messageQuery.AsEnumerable());
-            }
+            var totalMessages = messageQuery.Count();
 
             var totalPages = (int)Math.Ceiling((double)totalMessages / count);
 
-            if (page > totalPages)
-            {
-                return new MessagesResponseModel(totalPages, totalMessages, null);
-            }
-
-            var taking = messageQuery
-                .Take(totalMessages - ((page - 1) * count));
-            var takingCount = taking.Count();
-            var filteredMessages = taking
-                .Skip(takingCount - count).ToArray();
-            return new MessagesResponseModel(totalPages, totalMessages, filteredMessages);
+            return new MessagesResponseModel(totalPages, totalMessages, messageQuery.Skip((page - 1) * count).Take(count).ToArray().Reverse());
         }
     }
 }

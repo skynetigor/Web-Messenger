@@ -1,81 +1,38 @@
-import 'rxjs/add/operator/ToPromise';
-
 import { Injectable } from '@angular/core';
-import { AccountService } from 'app/account';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
+import { HttpCustomClient } from '../../account';
 import { MessageModel } from '../models';
+import { State } from '../store';
+import { GetMessageAction, RequestMessagesAction, RequestSendingMessageAction } from '../store/actions';
+import { AbstractService } from './abstract.service';
 import { ConnectionResolver } from './connection-resolver';
-import { RoomService } from './room.service';
 
 @Injectable()
-export class MessageService {
-    public messagesLoading: Observable<MessageModel[]>;
-    public getMessage: Observable<MessageModel>;
-    public getOwnMessage: Observable<MessageModel>;
-    private messageLoadingSubj: ReplaySubject<MessageModel[]>;
-    private getMessageSubj: ReplaySubject<MessageModel>;
-    private getOwnMessageSubj: ReplaySubject<MessageModel>;
-    private page = 2;
-    private totalPages: number;
-    private isRequestSended = false;
-
-    public get isLastPage(): boolean {
-        return this.page === this.totalPages;
-    }
+export class MessageService extends AbstractService {
+    public readonly messages$: Observable<MessageModel[]>;
 
     constructor(
-        private roomService: RoomService,
-        private connectionResolver: ConnectionResolver,
-        private accountService: AccountService) {
-        this.messageLoadingSubj = new ReplaySubject<MessageModel[]>();
-        this.getMessageSubj = new ReplaySubject<MessageModel>();
-        this.messagesLoading = this.messageLoadingSubj.asObservable();
-        this.getMessage = this.getMessageSubj.asObservable();
-        this.getOwnMessageSubj = new ReplaySubject<MessageModel>();
-        this.getOwnMessage = this.getOwnMessageSubj.asObservable();
+        connectionResolver: ConnectionResolver,
+        store: Store<State>, httpclient: HttpCustomClient) {
 
-        connectionResolver.listenServerEvent('ongetmessage').subscribe((message: MessageModel) => {
-            this.getMessageSubj.next(message);
-        });
+        super(connectionResolver, store);
 
-        roomService.roomChangedEvent.subscribe(model => {
-            this.totalPages = model.totalPages;
-            this.page = model.page + 1;
-            this.isRequestSended = false;
-        });
+        this.messages$ = store.select(t => t.messenger.currentRoomMessages);
+
+        this.updateStateFromEvent('onGetMessage', t => new GetMessageAction(t));
     }
 
-    public getMessages(): void {
-        if (this.isRequestSended) {
-            return;
-        }
-        if (this.page <= this.totalPages || this.totalPages === undefined) {
-            const roomId = this.roomService.currentRoomId;
-            this.isRequestSended = true;
-            this.connectionResolver.invokeServerMethod('GetMessage', roomId, 10, this.page).subscribe(model => {
-                if (model.messages) {
-                    this.totalPages = model.totalPages;
-                    this.messageLoadingSubj.next(model.messages);
-                }
-                this.isRequestSended = false;
-                this.page++;
-            });
-        }
+    public loadMessages(): void {
+        this.store.dispatch(new RequestMessagesAction());
     }
 
-    public writeMessage(roomId: string): void {
-        if (this.connectionResolver.isConnectionExist) {
-            this.connectionResolver.invokeServerMethod('UserTyping', roomId);
-        }
+    public invokeWritinMessageEvent(roomId: string): void {
+        this.connectionResolver.invokeServerMethod('UserTyping', roomId);
     }
 
-    public sendMessage(roomId: string, message: string) {
-        if (this.connectionResolver.isConnectionExist) {
-            this.connectionResolver.invokeServerMethod('SendMessage', roomId, message).subscribe((m: MessageModel) => {
-                this.getOwnMessageSubj.next(m);
-            });
-        }
+    public sendMessage(message: string) {
+        this.store.dispatch(new RequestSendingMessageAction(message));
     }
 }

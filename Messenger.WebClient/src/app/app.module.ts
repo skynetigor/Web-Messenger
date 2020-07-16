@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { appRoutes } from 'app/app-router';
-import { AppComponent } from 'app/app.component';
 
 import { AccountModule } from './account/account.module';
+import { appRoutes } from './app-router';
+import { AppComponent } from './app.component';
 import { ILocalizationService, LocalizationService } from './services/localization.service';
+import { SharedModule } from './shared';
+import { LoaderModule } from './chat/modules/loader';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +16,8 @@ import { ILocalizationService, LocalizationService } from './services/localizati
     BrowserModule,
     FormsModule,
     appRoutes,
+    SharedModule.forRoot(),
+    LoaderModule
   ],
   providers: [
     { provide: ILocalizationService, useClass: LocalizationService },

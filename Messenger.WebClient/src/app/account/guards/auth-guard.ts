@@ -1,30 +1,36 @@
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/switchMap';
+
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+
+import { ApiUrls } from '../../api-urls';
 import { UserStorage } from '../services';
-import { ApiUrls } from 'app/api-urls';
-import { Observable } from 'rxjs/Observable';
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private userStorage: UserStorage, private router: Router, private http: Http) { }
+    constructor(private userStorage: UserStorage, private router: Router, private http: HttpClient) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.userStorage.getUser();
-
+        console.log(user);
         if (user) {
             const url = ApiUrls.checkUser + '?userId=' + user.id + '&userName=' + user.userName;
-            return this.http.get(url).switchMap(response => {
-                return Observable.of(true);
-            }).catch(response => {
+            return this.http.get(url).pipe(map(response => true), catchError(response => {
                 if (response.status === 401) {
                     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-                    return Observable.of(false);
+                    return of(false);
                 }
-            })
+            }));
         }
+
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-        return Observable.of(false);
+        return of(false);
     }
 }

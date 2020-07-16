@@ -1,5 +1,4 @@
-﻿using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
 using Messenger.Core;
 using Messenger.IOC;
 using Messenger.WebAPI.Extensions;
@@ -15,24 +14,20 @@ namespace Messenger.WebAPI
     {
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(env.ContentRootPath, "Configuration"))
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            this.Configuration = builder.Build();
+            //var b = env.get
+            Configuration = Global.Configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IStringLocalizationManager, StringLocalizationManager>()
-                .Configure<DbSettings>(this.Configuration)
+                .Configure<DbSettings>(Configuration)
                 .AddCors()
                 .AddJwtAuthentication()
                 .AddAutoMapper()
-                .AddMessengerServices(this.Configuration)
+                .AddMessengerServices(Configuration)
                 .AddSignalR(o => o.Hubs.EnableDetailedErrors = true);
             services.AddMvc();
         }

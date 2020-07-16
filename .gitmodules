@@ -1,0 +1,3 @@
+[submodule "DocDb"]
+	path = DocDb
+	url = https://github.com/skynetigor/DocDb.git

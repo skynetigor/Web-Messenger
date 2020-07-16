@@ -1,0 +1,15 @@
+<div class="card chat-box">
+    <!-- <audio #audioNotification src="dist\webclient\assets\sms.mp3"></audio> -->
+    <div class="card-header"><i (click)="openRooms()">Open Rooms</i><users-list-inline-mobile></users-list-inline-mobile> </div>
+    <div class="card-body chat">
+        <div (scroll)="onScroll()" #scroll >
+            <message-mobile *ngFor="let message of (messages$ | async)" [setMessage]="message"></message-mobile>
+        </div>
+    </div>
+    <div class="writing-info">
+        <typing-informator-mobile></typing-informator-mobile>
+    </div>
+    <div class="actions">
+        <message-form-mobile></message-form-mobile>
+    </div>
+</div>

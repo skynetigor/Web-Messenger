@@ -1,14 +1,12 @@
-import { Router } from '@angular/router';
-import { UserStorage } from './user-storage';
-import { Http } from '@angular/http';
-import { HttpClient } from './httpclient';
-import { SignInModel, RegisterModel, UserModel } from '../models';
 import { Injectable } from '@angular/core';
-import { ApiUrls } from 'app/api-urls';
+import { Router } from '@angular/router';
 
-const isNotNullOrUndefined = (obj: any): boolean => {
-    return obj === null || obj === undefined;
-};
+import { ApiUrls } from '../../api-urls';
+import { RegisterModel, SignInModel, UserModel } from '../models';
+import { HttpCustomClient } from './httpclient';
+import { UserStorage } from './user-storage';
+import { Observable, of } from 'rxjs';
+
 
 @Injectable()
 export class AccountService {
@@ -24,43 +22,49 @@ export class AccountService {
         return this.user;
     }
 
-    private authorize(model: any, url: string) {
-        this.http.post(url, model).subscribe(response => {
-            const data: any = response.json();
+    private authorize(model: any, url: string): Observable<any> {
+        const obs = this.http.post(url, model);
+        obs.subscribe(response => {
+            const data: any = response;
             if (data) {
                 this.errors = [];
                 this.user = data;
                 this.userStorage.setUser(data);
                 this.router.navigate(['/chat']);
             }
-        }, error => {
-            const data: any = error.json();
+        }, e => {
+            const data: any = e.error;
             if (data) {
                 this.errors = [];
 
+                // tslint:disable-next-line:forin
                 for (const key in data) {
                     const obj = data[key];
-                    this.errors.push(obj);
+                    this.errors = this.errors.concat(obj);
                 }
             }
+
+            console.log(e);
         });
+
+        return obs;
     }
 
-    constructor(private http: HttpClient, private router: Router, private userStorage: UserStorage) { }
+    constructor(private http: HttpCustomClient, private router: Router, private userStorage: UserStorage) { }
 
-
-    public signIn(model: SignInModel): void {
-        this.authorize(model, ApiUrls.signIn);
+    public signIn(model: SignInModel): Observable<any> {
+       return this.authorize(model, ApiUrls.signIn);
     }
 
-    public register(model: RegisterModel): void {
-        this.authorize(model, ApiUrls.register);
+    public register(model: RegisterModel): Observable<any> {
+        return this.authorize(model, ApiUrls.register);
     }
 
-    public signOut(): void {
+    public signOut(): Observable<any> {
         this.userStorage.clearUser();
         this.isInRoom = false;
         this.router.navigate(['/login']);
+        return of();
     }
 
     public clearErrors(): void {

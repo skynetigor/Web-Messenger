@@ -1,96 +1,71 @@
-import { RoomChangingModel } from './../models/roomChangingModel';
-import { MessageModel } from './../models/message.model';
-import { ConnectionResolver } from './connection-resolver';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Injectable } from '@angular/core';
-import { ISignalRConnection } from 'ng2-signalr';
+import { Store } from '@ngrx/store';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { AccountService, HttpCustomClient, UserModel } from '../../account';
+import { State } from '../store';
+import {
+    RequestCreatingRoomAction,
+    RequestEnteringRoomAction,
+    RequestRoomsAction,
+    UpdateRoomsAction,
+    UserCountChangedAction,
+} from '../store/actions';
 import { RoomModel } from './../models/room.model';
-import { UserModel, AccountService, HttpClient } from 'app/account';
-import { ApiUrls } from 'app/api-urls';
+import { AbstractService } from './abstract.service';
+import { ConnectionResolver } from './connection-resolver';
 
 const currentRoom = 'currentRoom';
 
 @Injectable()
-export class RoomService {
+export class RoomService extends AbstractService {
+    public rooms$: Observable<RoomModel[]>;
+    public users$: Observable<UserModel[]>;
 
-    private roomchanged = new ReplaySubject<RoomChangingModel>(1);
-    public rooms: RoomModel[] = [];
-    public users: UserModel[] = [];
+    public currentRoom$: Observable<RoomModel>;
 
-    private get getRoomChangingModel(): RoomChangingModel {
-        const roomChanignModel = new RoomChangingModel();
-        roomChanignModel.messages = [];
-        roomChanignModel.page = 1;
-        roomChanignModel.totalPages = 1;
-        return roomChanignModel;
-    }
-
-    public get currentRoomId(): string {
-        const strNumber = localStorage.getItem(currentRoom);
-        if (strNumber) {
-            return strNumber;
-        }
-        return null;
-    }
-
-    public set currentRoomId(value: string) {
-        localStorage.setItem(currentRoom, value);
-    }
-
-    public get roomChangedEvent(): Observable<RoomChangingModel> {
-        return this.roomchanged.asObservable();
-    }
+    public currentRoomId: string;
 
     constructor(
         private accountService: AccountService,
-        private connectionResolver: ConnectionResolver,
-        private httpClient: HttpClient
+        connectionResolver: ConnectionResolver,
+        private httpClient: HttpCustomClient,
+        store: Store<State>
     ) {
-        const rooms = this.rooms;
-        const users = this.users;
-            httpClient.post(ApiUrls.getRooms, null).subscribe(r => {
-                const data = r.json();
-                this.rooms = data;
-            });
-            this.connectionResolver.listenServerEvent<RoomModel[]>('onRoomsCountChange').subscribe(model => {
-                this.rooms = model;
-            });
-            this.connectionResolver.listenServerEvent<UserModel[]>('onUserCountChanged').subscribe(model => {
-                this.users = model;
-            });
+        super(connectionResolver, store);
 
-            if (this.currentRoomId) {
-                this.enterRoom(this.currentRoomId);
+        store.dispatch(new RequestRoomsAction());
+
+        this.users$ = store.select(t => t.messenger.users);
+        this.rooms$ = store.select(t => t.messenger.rooms);
+
+        const roomIdFromLocalStorage = localStorage.getItem(currentRoom);
+
+        if (roomIdFromLocalStorage) {
+            this.enterRoom(roomIdFromLocalStorage);
+        }
+
+        this.updateStateFromEvent('OnUserCountChanged', t => new UserCountChangedAction(t));
+        this.updateStateFromEvent('onRoomsCountChange', t => new UpdateRoomsAction(t));
+
+        this.currentRoom$ = combineLatest(this.rooms$, store.select(t => t.messenger.currentRoomId))
+            .pipe(
+            map(([rooms, currentRoomId]) => rooms.find(t => t.id === currentRoomId)));
+
+        this.subscribe(this.currentRoom$, room => {
+            if (room && (this.currentRoomId !== room.id || !this.currentRoomId)) {
+                this.currentRoomId = room.id;
+                localStorage.setItem(currentRoom, this.currentRoomId);
             }
+        });
     }
 
     public enterRoom(id: string): void {
-        this.connectionResolver.invokeServerMethod('EnterRoom', id, 10).subscribe(model => {
-            if (model) {
-                this.users = model.users;
-                if (model.messagesModel) {
-                    model.messagesModel.page = 1;
-                    this.roomchanged.next(model.messagesModel);
-                }else {
-                    this.roomchanged.next(this.getRoomChangingModel);
-                }
-                this.accountService.isInRoom = true;
-                this.currentRoomId = model.roomId;
-            }
-        });
+        this.store.dispatch(new RequestEnteringRoomAction(id));
     }
 
     public createRoom(name: string): void {
-        this.connectionResolver.invokeServerMethod('CreateRoom', name).subscribe(model => {
-            if (model) {
-                this.rooms = model.rooms;
-                this.users = model.users;
-                this.accountService.isInRoom = true;
-                this.currentRoomId = model.roomId;
-                this.roomchanged.next(this.getRoomChangingModel)
-            }
-        });
+        this.store.dispatch(new RequestCreatingRoomAction(name));
     }
 }

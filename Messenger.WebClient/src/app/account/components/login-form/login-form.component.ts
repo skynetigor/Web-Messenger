@@ -2,9 +2,9 @@ import { ILocalizationService } from './../../../services/localization.service';
 import { Component } from '@angular/core';
 import { SignInModel } from '../../models';
 import { AccountService } from '../../services';
+import { LoaderService } from 'src/app/chat/modules/loader';
 
 @Component({
-    moduleId: module.id,
     selector: 'login',
     templateUrl: 'login-form.component.html',
     styleUrls: ['../../account.css'],
@@ -22,7 +22,7 @@ export class LoginFormComponent {
         return this.localizationService.availableLangs;
     }
 
-    constructor(private accountService: AccountService, private localizationService: ILocalizationService) {
+    constructor(private accountService: AccountService, private localizationService: ILocalizationService, private loadingService: LoaderService) {
         accountService.clearErrors();
         this.model = new SignInModel();
     }
@@ -32,7 +32,7 @@ export class LoginFormComponent {
     }
 
     public signIn() {
-        this.accountService.signIn(this.model);
+       this.loadingService.useLoader(this.accountService.signIn(this.model), 'Authorizing...');
     }
 
     public localize(key: string, placeholder: string): string {

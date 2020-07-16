@@ -1,13 +1,9 @@
-<!--component html goes here -->
 <div class="center-form center-of-block">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span>{{localize('loginFormTitle', 'Login form')}}</span>
-            <span *ngFor="let lang of availableLangs">
-<span (click)="changeLocalization(lang)">{{lang}}</span>
-            </span>
+    <div class="card panel-default">
+        <div class="card-header panel-heading">
+            <span>Login form</span>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="error-container">
                 <p *ngFor="let error of errors">{{error}}</p>
             </div>
@@ -20,8 +16,8 @@
                 <input [(ngModel)]="model.password" type="password" placeholder="{{localize('password', 'Password')}}" class="form-control">
             </div>
             <div class="success">
-                <button routerLink="/registration" class="btn btn-default">{{localize('registration', 'Registration')}}</button>
-                <button (click)="signIn()" class="btn btn-default">{{localize('signin', 'Sign in')}}</button>
+                <button routerLink="/registration" class="btn btn-outline-primary">{{localize('registration', 'Registration')}}</button>
+                <button (click)="signIn()" class="btn btn-outline-primary">{{localize('signin', 'Sign in')}}</button>
             </div>
         </div>
     </div>
